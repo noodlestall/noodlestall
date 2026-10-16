@@ -1,0 +1,29 @@
+---
+import { allRecipes } from 'astro:content';
+import RecipeCard from '../../components/RecipeCard.astro';
+import SearchBar from '../../components/SearchBar.astro';
+import CategoryFilters from '../../components/CategoryFilters.astro';
+
+const recipes = await allRecipes();
+const sorted = recipes.sort((a,b) => a.data.title.localeCompare(b.data.title));
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Recipes — Boathouse Noodles</title>
+  </head>
+  <body>
+    <main>
+      <SearchBar />
+      <CategoryFilters />
+      <section class="recipe-grid" aria-live="polite">
+        {sorted.map((r) => (
+          <RecipeCard title={r.data.title} category={r.data.category} image={r.data.cover} slug={r.slug} totalTime={r.data.totalTime || ''} difficulty={r.data.difficulty} />
+        ))}
+      </section>
+    </main>
+    <script type="application/json" id="recipes-data">{JSON.stringify(recipes)}</script>
+  </body>
+</html>

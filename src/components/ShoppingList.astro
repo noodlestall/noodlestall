@@ -1,0 +1,39 @@
+---
+const { recipe } = Astro.props;
+import { generateWhatsAppMessage, buildWhatsAppLink } from '../lib/sharing';
+---
+<section class="shopping-list">
+  <h3>Shopping List</h3>
+  <div id="shopping-items">
+    {recipe.ingredients.map((i, idx) => (
+      <label class="shopping-item"><input type="checkbox" data-idx={idx} /> {i.group ? `${i.group} — ` : ''}{i.quantity ? `${i.quantity} ${i.unit} ` : ''}{i.name}</label>
+    ))}
+  </div>
+  <div class="shopping-actions">
+    <button id="copy-list">Copy remaining</button>
+    <a id="wa-share" href="#">Share on WhatsApp</a>
+  </div>
+</section>
+
+<script>
+  (function(){
+    const items = Array.from(document.querySelectorAll('#shopping-items input')).map((el) => ({el, checked: el.checked}));
+    const copyBtn = document.getElementById('copy-list');
+    const wa = document.getElementById('wa-share');
+    function getState(){
+      return Array.from(document.querySelectorAll('#shopping-items label')).map((lab, idx) => ({ checked: lab.querySelector('input').checked, label: lab.innerText.trim() }));
+    }
+    copyBtn.addEventListener('click', async ()=>{
+      const state = getState().filter(i => !i.checked).map(i=>i.label).join('\n');
+      await navigator.clipboard.writeText(state);
+      copyBtn.textContent = 'Copied';
+      setTimeout(()=>copyBtn.textContent='Copy remaining',1500);
+    });
+    wa.addEventListener('click', (e)=>{
+      e.preventDefault();
+      const state = getState();
+      const msg = generateWhatsAppMessage(recipe.title, window.__selectedServings || recipe.servings, state);
+      window.open(buildWhatsAppLink(msg), '_blank');
+    });
+  })();
+</script>

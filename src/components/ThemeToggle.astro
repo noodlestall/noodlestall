@@ -1,0 +1,13 @@
+<button id="theme-toggle" aria-label="Toggle theme">🌓</button>
+<script>
+  (function(){
+    const btn = document.getElementById('theme-toggle');
+    function applyTheme(t){ document.documentElement.setAttribute('data-theme', t); }
+    const pref = sessionStorage.getItem('theme') || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    applyTheme(pref);
+    btn.addEventListener('click', ()=>{
+      const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(next); sessionStorage.setItem('theme', next);
+    });
+  })();
+</script>
