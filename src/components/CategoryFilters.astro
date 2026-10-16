@@ -1,0 +1,8 @@
+---
+const categories = ['Breakfast','Lunch','Dinner','Desserts','Baking','Snacks','Soups','Salads'];
+---
+<nav class="category-filters" aria-label="Categories">
+  {categories.map(cat => (
+    <a class="cat-link" href={`/recipes/?category=${encodeURIComponent(cat)}`}>{cat}</a>
+  ))}
+</nav>

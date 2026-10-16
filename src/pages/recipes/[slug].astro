@@ -1,0 +1,57 @@
+---
+import { getCollection } from 'astro:content';
+import RecipeIngredients from '../../components/RecipeIngredients.astro';
+import RecipeInstructions from '../../components/RecipeInstructions.astro';
+import ShoppingList from '../../components/ShoppingList.astro';
+import ThemeToggle from '../../components/ThemeToggle.astro';
+import { formatQuantity, scaleQuantity } from '../../lib/scaling';
+
+const collections = await getCollection('recipes');
+const slug = Astro.params.slug;
+const entry = collections.find((e) => e.slug === slug);
+if (!entry) {
+  throw Astro.redirect('/404', 404);
+}
+const recipe = entry.data;
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{recipe.title} — Boathouse Noodles</title>
+    <meta name="description" content={recipe.description} />
+    <script type="application/ld+json">
+      {JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Recipe',
+        name: recipe.title,
+        recipeIngredient: recipe.ingredients.map((i) => i.quantity ? `${i.quantity} ${i.unit} ${i.name}` : i.name),
+        recipeInstructions: recipe.instructions.map((s) => s.text)
+      })}
+    </script>
+  </head>
+  <body>
+    <article class="recipe">
+      <header>
+        <h1>{recipe.title}</h1>
+        <p class="lead">{recipe.description}</p>
+        <div class="meta">
+          <span>{recipe.category}</span>
+          <span>•</span>
+          <span>{recipe.totalTime || `${recipe.prepTime || '-'} prep`}</span>
+          <ThemeToggle />
+        </div>
+      </header>
+
+      <div class="recipe-grid">
+        <aside>
+          <RecipeIngredients recipe={recipe} />
+          <ShoppingList recipe={recipe} />
+        </aside>
+        <section>
+          <RecipeInstructions recipe={recipe} />
+        </section>
+      </div>
+    </article>
+  </body>
+</html>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://noodlestall.github.io/noodlestall/</loc>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://noodlestall.github.io/noodlestall/recipes/</loc>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://noodlestall.github.io/noodlestall/recipes/creamy-tomato-pasta/</loc>
+  </url>
+  <url>
+    <loc>https://noodlestall.github.io/noodlestall/recipes/banana-bread/</loc>
+  </url>
+  <url>
+    <loc>https://noodlestall.github.io/noodlestall/recipes/shakshuka/</loc>
+  </url>
+  <url>
+    <loc>https://noodlestall.github.io/noodlestall/recipes/chicken-soup/</loc>
+  </url>
+  <url>
+    <loc>https://noodlestall.github.io/noodlestall/recipes/chocolate-cake/</loc>
+  </url>
+  <url>
+    <loc>https://noodlestall.github.io/noodlestall/recipes/kale-salad/</loc>
+  </url>
+</urlset>

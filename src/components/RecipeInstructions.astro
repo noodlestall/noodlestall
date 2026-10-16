@@ -1,0 +1,25 @@
+---
+const { recipe } = Astro.props;
+---
+<section class="instructions">
+  <h2>Instructions</h2>
+  <ol>
+    {recipe.instructions.map((s) => (
+      <li>
+        <div class="step-text">{s.text}</div>
+        {s.image ? (<img src={s.image} alt={`Step ${s.step}`} loading="lazy"/>) : null}
+        <label><input type="checkbox" class="step-check" /> Done</label>
+      </li>
+    ))}
+  </ol>
+</section>
+
+<script>
+  (function(){
+    document.querySelectorAll('.step-check').forEach(chk => {
+      chk.addEventListener('change', ()=>{
+        chk.parentElement.parentElement.classList.toggle('done', chk.checked);
+      });
+    });
+  })();
+</script>
