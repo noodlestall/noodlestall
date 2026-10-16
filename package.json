@@ -1,0 +1,30 @@
+{
+  "name": "boathouse-noodles",
+  "version": "2.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview --host 0.0.0.0",
+    "check": "astro check",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "lint": "eslint . --ext .js,.ts,.astro",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.4",
+    "astro": "^4.16.12",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.2",
+    "@types/node": "^22.10.1",
+    "astro": "^4.16.12",
+    "eslint": "^9.16.0",
+    "eslint-plugin-astro": "^1.0.0",
+    "prettier": "^3.6.0",
+    "vitest": "^2.1.8"
+  }
+}
