@@ -1,0 +1,46 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  instructions: CollectionEntry<'recipes'>['data']['instructions'];
+}
+const { instructions } = Astro.props;
+---
+
+<section aria-labelledby="method-heading">
+  <h2 class="section-title" id="method-heading">Method</h2>
+  <ol class="steps" id="steps">
+    {
+      instructions.map((step, i) => {
+        const n = String(i + 1).padStart(2, '0');
+        const inputId = `step-${i + 1}`;
+        return (
+          <li class="step" data-step={i}>
+            <input class="step__check" type="checkbox" id={inputId} data-step-check={i} aria-label={`Mark step ${i + 1} as done`} />
+            <div class="step__body">
+              <h3 class="step__title">
+                <span class="step__number" aria-hidden="true">{n}</span>
+                <label for={inputId}>{step.title ?? `Step ${i + 1}`}</label>
+              </h3>
+              <p class="step__text">{step.text}</p>
+              {step.image && (
+                <figure class="step__image">
+                  {step.image.format === 'svg' ? (
+                    <Image src={step.image} alt={step.imageAlt ?? ''} loading="lazy" decoding="async" />
+                  ) : (
+                    <Image src={step.image} alt={step.imageAlt ?? ''} width={800} height={600} widths={[448, 800]} sizes="(min-width: 40em) 448px, 100vw" fit="cover" loading="lazy" decoding="async" format="webp" />
+                  )}
+                </figure>
+              )}
+            </div>
+          </li>
+        );
+      })
+    }
+  </ol>
+  <div class="steps-tools">
+    <span id="steps-status" aria-live="polite">0 of {instructions.length} steps done</span>
+    <button type="button" class="btn btn--small btn--quiet" id="steps-reset">Reset steps</button>
+  </div>
+</section>

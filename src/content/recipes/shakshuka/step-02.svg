@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img" aria-labelledby="t">
+  <title id="t">Eggs poaching in tomato sauce – placeholder illustration, replace with a photograph</title>
+  <rect width="800" height="600" fill="#f4eee2"/>
+  <g fill="none" stroke="#2b2a27" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" transform="">
+
+    <circle cx="380" cy="320" r="170" fill="#2b2a27"/><circle cx="380" cy="320" r="150" fill="#b4473a"/>
+    <path d="M546 310 h160 a16 16 0 0 1 0 32 h-160" fill="#2b2a27"/>
+    <circle cx="320" cy="280" r="44" fill="#fbf7ee" stroke="none"/><circle cx="320" cy="280" r="18" fill="#e0b43c"/>
+    <circle cx="440" cy="270" r="42" fill="#fbf7ee" stroke="none"/><circle cx="440" cy="270" r="17" fill="#e0b43c"/>
+    <circle cx="330" cy="380" r="42" fill="#fbf7ee" stroke="none"/><circle cx="330" cy="380" r="17" fill="#e0b43c"/>
+    <circle cx="445" cy="375" r="44" fill="#fbf7ee" stroke="none"/><circle cx="445" cy="375" r="18" fill="#e0b43c"/>
+  </g>
+  <rect x="24" y="24" width="752" height="552" fill="none" stroke="#2b2a27" stroke-width="2" opacity="0.35"/>
+  <text x="400" y="556" text-anchor="middle" font-family="'American Typewriter','Courier Prime','Courier New',monospace" font-size="22" fill="#2b2a27" opacity="0.6" letter-spacing="2">PLACEHOLDER · STEP ILLUSTRATION</text>
+</svg>

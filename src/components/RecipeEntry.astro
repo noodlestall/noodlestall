@@ -1,0 +1,38 @@
+---
+import CoverImage from './CoverImage.astro';
+import { metaLine, type NumberedRecipe } from '../lib/recipes';
+import { formatRecipeNumber, recipePath } from '../lib/site';
+
+interface Props {
+  recipe: NumberedRecipe;
+  headingLevel?: 'h2' | 'h3';
+  loading?: 'lazy' | 'eager';
+}
+const { recipe, headingLevel = 'h2', loading = 'lazy' } = Astro.props;
+const { entry, number } = recipe;
+const { data } = entry;
+const href = recipePath(import.meta.env.BASE_URL, entry.id);
+const Heading = headingLevel;
+---
+
+<li class="entry" data-id={entry.id}>
+  <a class="entry__media" href={href} tabindex="-1" aria-hidden="true">
+    <CoverImage
+      image={data.coverImage}
+      alt=""
+      title={data.title}
+      category={data.category}
+      variant="thumb"
+      loading={loading}
+    />
+  </a>
+  <div class="entry__body">
+    <p class="entry__number">{formatRecipeNumber(number)}</p>
+    <Heading class="entry__title">
+      <a href={href}>{data.title}</a>
+      {data.draft && <span class="entry__draft">Draft</span>}
+    </Heading>
+    <p class="entry__meta">{metaLine(data)}</p>
+    <p class="entry__desc">{data.description}</p>
+  </div>
+</li>

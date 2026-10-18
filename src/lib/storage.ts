@@ -1,18 +1,52 @@
-export function readSessionState(key: string) {
-  if (typeof window === 'undefined') return null;
+/**
+ * Temporary browser state. Everything lives in sessionStorage and disappears
+ * when the tab is closed. No personal data is stored.
+ */
+
+export const storageKeys = {
+  servings: (id: string) => `bn:servings:${id}`,
+  shopping: (id: string) => `bn:shopping:${id}`,
+  steps: (id: string) => `bn:steps:${id}`
+};
+
+export const THEME_KEY = 'bn:theme';
+
+function getSession(): Storage | null {
   try {
-    const raw = window.sessionStorage.getItem(key);
-    return raw ? JSON.parse(raw) : null;
+    if (typeof window === 'undefined' || !window.sessionStorage) return null;
+    return window.sessionStorage;
   } catch {
     return null;
   }
 }
 
-export function writeSessionState(key: string, value: unknown) {
-  if (typeof window === 'undefined') return;
+export function readSession<T>(key: string, fallback: T): T {
+  const store = getSession();
+  if (!store) return fallback;
   try {
-    window.sessionStorage.setItem(key, JSON.stringify(value));
+    const raw = store.getItem(key);
+    return raw === null ? fallback : (JSON.parse(raw) as T);
   } catch {
-    // ignore storage failures
+    return fallback;
+  }
+}
+
+export function writeSession(key: string, value: unknown): void {
+  const store = getSession();
+  if (!store) return;
+  try {
+    store.setItem(key, JSON.stringify(value));
+  } catch {
+    /* storage may be full or blocked; the page keeps working without it */
+  }
+}
+
+export function removeSession(key: string): void {
+  const store = getSession();
+  if (!store) return;
+  try {
+    store.removeItem(key);
+  } catch {
+    /* ignore */
   }
 }
