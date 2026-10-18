@@ -1,19 +1,63 @@
-export function generateWhatsAppMessage(recipeTitle: string, servings: number, items: Array<{ checked: boolean; label: string }>) {
-  const remaining = items.filter((item) => !item.checked);
-  const lines = [
-    '🛒 Boathouse Noodles',
-    `Shopping List: ${recipeTitle}`,
-    `Servings: ${servings}`,
-    ...remaining.map((item) => `☐ ${item.label}`)
-  ];
+export interface ShoppingItem {
+  label: string;
+  checked: boolean;
+}
+
+export interface ShoppingGroup {
+  title: string;
+  items: ShoppingItem[];
+}
+
+export interface ShoppingListInput {
+  recipeTitle: string;
+  servings: number;
+  groups: ShoppingGroup[];
+}
+
+const BRAND_LINE = '🛒 BOATHOUSE NOODLES';
+
+/**
+ * Plain-text shopping list of the remaining (unchecked) ingredients.
+ *
+ * 🛒 BOATHOUSE NOODLES
+ *
+ * Shopping List: Creamy Tomato Pasta
+ * Servings: 2
+ *
+ * PASTA
+ * ☐ 200 g Spaghetti
+ */
+export function buildShoppingListMessage(input: ShoppingListInput): string {
+  const lines: string[] = [BRAND_LINE, '', `Shopping List: ${input.recipeTitle}`, `Servings: ${formatServings(input.servings)}`];
+
+  const remainingGroups = input.groups
+    .map((group) => ({ title: group.title, items: group.items.filter((item) => !item.checked) }))
+    .filter((group) => group.items.length > 0);
+
+  if (remainingGroups.length === 0) {
+    lines.push('', 'Everything is already ticked off.');
+    return lines.join('\n');
+  }
+
+  for (const group of remainingGroups) {
+    lines.push('', group.title.toUpperCase());
+    for (const item of group.items) {
+      lines.push(`☐ ${item.label}`);
+    }
+  }
 
   return lines.join('\n');
 }
 
-export function buildWhatsAppLink(message: string) {
-  return `https://wa.me/?text=${encodeURIComponent(message)}`;
+export function formatServings(servings: number): string {
+  return (Math.round(servings * 100) / 100).toString();
 }
 
-export function getRecipeUrl(basePath: string, slug: string) {
-  return `${basePath}recipes/${slug}/`;
+/** wa.me link with the text percent-encoded. Opening it never sends anything by itself. */
+export function buildWhatsAppUrl(text: string): string {
+  return `https://wa.me/?text=${encodeURIComponent(text)}`;
+}
+
+export function buildRecipeShareMessage(title: string, url: string): string {
+  return `${title} – Boathouse Noodles\n${url}`;
 }

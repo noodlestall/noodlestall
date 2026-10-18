@@ -1,45 +1,70 @@
 ---
 title: Banana Bread
-description: Moist, simple banana bread with a tender crumb.
-category: Baking
+description: The classic loaf for over-ripe bananas. Dense, moist and better on the second day.
+category: baking
+cuisine: american
+difficulty: easy
+servings: 10
+prepTimeMinutes: 15
+cookTimeMinutes: 60
+coverImage: ./cover.svg
+coverAlt: Sliced banana bread loaf (placeholder illustration)
 tags:
-  - Baking
-  - Dessert
-servings: 8
-prepTime: 15
-cookTime: 55
-totalTime: 70
-difficulty: Easy
-cuisine: American
-cover: './cover.svg'
-ingredients:
-  - name: Ripe bananas
-    quantity: 400
-    unit: g
-    group: Batter
-  - name: Flour
-    quantity: 250
-    unit: g
-    group: Batter
-  - name: Sugar
-    quantity: 150
-    unit: g
-    group: Batter
-  - name: Butter
-    quantity: 100
-    unit: g
-    group: Batter
-  - name: Baking powder
-    quantity: 10
-    unit: g
-    group: Batter
+  - baking
+  - vegetarian
+  - sweet
+  - banana
+  - loaf
+ingredientGroups:
+  - title: Batter
+    ingredients:
+      - name: Very ripe bananas
+        quantity: 3
+        unit: piece
+        note: about 350 g peeled
+      - name: Butter
+        quantity: 115
+        unit: g
+        note: melted, plus extra for the tin
+      - name: Brown sugar
+        quantity: 150
+        unit: g
+      - name: Egg
+        quantity: 1
+        unit: piece
+      - name: Vanilla extract
+        quantity: 5
+        unit: ml
+      - name: Baking soda
+        quantity: 5
+        unit: g
+      - name: Salt
+        quantity: 2
+        unit: g
+      - name: Plain flour
+        quantity: 190
+        unit: g
+  - title: Topping
+    ingredients:
+      - name: Walnuts
+        quantity: 50
+        unit: g
+        note: roughly chopped
+        optional: true
 instructions:
-  - step: 1
-    text: Preheat oven to 175°C. Mash bananas and combine with melted butter.
-  - step: 2
-    text: Mix dry ingredients and fold into the banana mixture.
-  - step: 3
-    text: Pour into a loaf tin and bake for about 55 minutes.
+  - title: Prepare
+    text: Heat the oven to 175 °C. Butter a 23 × 13 cm loaf tin and line the base with baking paper.
+  - title: Mash the bananas
+    text: Mash the bananas in a large bowl with a fork until mostly smooth. Stir in the melted butter.
+  - title: Mix the batter
+    text: Beat in the sugar, egg and vanilla. Sprinkle over the baking soda and salt, then fold in the flour until no dry streaks remain. Do not overmix.
+  - title: Bake
+    text: Scrape into the tin, scatter with walnuts if using, and bake for 55 to 65 minutes until a skewer comes out clean.
+  - title: Cool
+    text: Leave in the tin for 10 minutes, then turn out onto a rack and cool completely before slicing.
+source:
+  name: Family recipe card
+  url: null
 ---
 
-A beloved classic — use very ripe bananas for best flavor.
+Servings are counted as slices. Wrapped well, the loaf keeps for three days and freezes well in slices.

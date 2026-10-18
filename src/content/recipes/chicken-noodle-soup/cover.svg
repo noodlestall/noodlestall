@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" role="img" aria-labelledby="t">
+  <title id="t">Chicken Noodle Soup – placeholder illustration, replace with a photograph</title>
+  <rect width="1200" height="800" fill="#f4eee2"/>
+  <g fill="none" stroke="#2b2a27" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" transform="translate(0 -60)">
+
+    <path d="M340 380 h520 v220 q0 100 -100 100 h-320 q-100 0 -100 -100 z" fill="#4a3a30"/>
+    <ellipse cx="600" cy="380" rx="260" ry="48" fill="#2b2a27"/>
+    <ellipse cx="600" cy="380" rx="228" ry="34" fill="#e0b43c" stroke="none"/>
+    <path d="M430 384 q40 -20 80 0 t80 0 t80 0 t80 0" stroke="#fbf7ee" stroke-width="6"/>
+    <g fill="#b4473a" stroke="none" opacity="0.9"><circle cx="500" cy="372" r="9"/><circle cx="640" cy="390" r="9"/><circle cx="720" cy="372" r="8"/></g>
+    <g fill="#7d8f6a" stroke="none"><circle cx="560" cy="392" r="5"/><circle cx="690" cy="370" r="5"/><circle cx="470" cy="392" r="5"/></g>
+    <path d="M340 440 h-60 a30 30 0 0 0 0 60 h60 M860 440 h60 a30 30 0 0 1 0 60 h-60" fill="#4a3a30"/>
+    <path d="M520 300 q-30 -40 0 -80 q30 -40 0 -80 M600 290 q-30 -40 0 -80 q30 -40 0 -80 M680 300 q-30 -40 0 -80 q30 -40 0 -80" opacity="0.5" stroke-width="4"/>
+    <path d="M760 360 l120 -160" stroke-width="10"/><ellipse cx="892" cy="186" rx="26" ry="34" transform="rotate(35 892 186)" fill="#d8c9ad"/>
+  </g>
+  <rect x="24" y="24" width="1152" height="752" fill="none" stroke="#2b2a27" stroke-width="2" opacity="0.35"/>
+  <text x="600" y="756" text-anchor="middle" font-family="'American Typewriter','Courier Prime','Courier New',monospace" font-size="22" fill="#2b2a27" opacity="0.6" letter-spacing="2">PLACEHOLDER ILLUSTRATION · REPLACE WITH A PHOTOGRAPH</text>
+</svg>

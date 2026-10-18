@@ -1,6 +1,14 @@
 ---
-layout: ../layouts/Layout.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const base = import.meta.env.BASE_URL;
 ---
 
-<h2>Page not found</h2>
-<p>Sorry — the page you requested could not be found.</p>
+<BaseLayout title="Page not found" description="This page is not in the archive." path={`${base}404/`}>
+  <section class="not-found">
+    <p class="eyebrow">Error 404</p>
+    <h1>Not on file</h1>
+    <p class="lead">There is no recipe sheet at this address. It may have been renamed or removed.</p>
+    <p style="margin-top: 1.5rem"><a class="btn" href={base}>Back to the recipe index</a></p>
+  </section>
+</BaseLayout>

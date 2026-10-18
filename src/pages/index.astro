@@ -1,26 +1,41 @@
 ---
-layout: ../layouts/Layout.astro
-title: Boathouse Noodles
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArchiveControls from '../components/ArchiveControls.astro';
+import RecipeEntry from '../components/RecipeEntry.astro';
+import { getNumberedRecipes, toIndexEntry } from '../lib/recipes';
+import { availableLetters, uniqueCuisines } from '../lib/search';
+import { SITE, safeJson } from '../lib/site';
+
+const recipes = await getNumberedRecipes();
+const index = recipes.map(toIndexEntry);
+const cuisines = uniqueCuisines(index);
+const letters = availableLetters(index);
+const base = import.meta.env.BASE_URL;
+const count = recipes.length;
 ---
 
-<style>
-  .hero { padding: 3rem 1rem; display:flex; gap:1rem; align-items:center; justify-content:space-between }
-  .hero-main { max-width: 42rem }
-</style>
-
-<section class="hero">
-  <div class="hero-main">
-    <h1>Boathouse Noodles</h1>
-    <p class="lead">A small, elegant personal cookbook — find recipes quickly, scale ingredients, and share a shopping list.</p>
-    <a class="button" href="/recipes/">Browse recipes</a>
+<BaseLayout title={SITE.name} description={SITE.description} path={base} current="archive">
+  <div class="archive-head">
+    <h1>Recipe index</h1>
+    <p class="eyebrow"><strong>{count}</strong> {count === 1 ? 'recipe' : 'recipes'} on file</p>
   </div>
-  <div aria-hidden="true">
-    <img src="/public/favicon.svg" alt="" width="320"/>
+
+  <ArchiveControls cuisines={cuisines} letters={letters} />
+
+  <div class="results-bar">
+    <p id="results-status" aria-live="polite" aria-atomic="true">Showing all {count} recipes, A – Z</p>
   </div>
-</section>
 
-<hr/>
+  <ol class="recipe-index" id="recipe-index" aria-label="Recipes">
+    {recipes.map((recipe, i) => <RecipeEntry recipe={recipe} loading={i < 4 ? 'eager' : 'lazy'} />)}
+  </ol>
 
-<!-- Featured recipes and search -->
+  <p class="empty-state" id="empty-state" hidden>
+    No recipes match. Try fewer filters or a different word.
+  </p>
 
----
+  <script type="application/json" id="recipe-index-data" set:html={safeJson(index)} />
+  <script>
+    import '../scripts/archive';
+  </script>
+</BaseLayout>

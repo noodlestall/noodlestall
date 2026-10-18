@@ -1,49 +1,77 @@
 # Boathouse Noodles
 
-A modern editorial recipe website for quick browsing, cooking, scaling ingredients, and planning a single-recipe shopping list.
+A personal recipe archive for family and friends, designed to look like a carefully kept collection of typewritten recipe sheets. Built with [Astro](https://astro.build), published for free on GitHub Pages.
 
-## Stack
-- Astro
-- TypeScript
-- Zod
-- Vitest
-- Playwright
-- GitHub Pages
+**Live site:** https://noodlestall.github.io/noodlestall/
 
-## Development
+## What it does
+
+- **Recipe index** with a photograph, archive number, title, category, total time and difficulty for every recipe. Two columns on desktop, one on phones.
+- **Instant search** across names, ingredients and tags, plus filters for category, vegetarian/vegan, cooking time, difficulty and cuisine, A–Z and Z–A sorting, a clickable letter index and shareable URLs such as `/?category=soups&diet=vegan`.
+- **Recipe sheets** with a large photograph, times, servings, grouped ingredients, numbered steps with optional step photos and done-checkboxes, notes, source attribution and related recipes.
+- **Ingredient scaling** from the original servings: + / −, direct entry, ½×, 1×, 2× and reset. Metric only, two decimal places, nothing is rounded away.
+- **Shopping list** per recipe using the scaled quantities: tick items off, copy the rest or send them via WhatsApp.
+- **Print**, **copy link** and **share via WhatsApp** on every recipe.
+- **Paper and ink themes** that follow the system preference and can be switched by hand.
+- Semantic HTML, keyboard support, visible focus, reduced-motion support, Open Graph tags, sitemap, robots.txt and schema.org Recipe data.
+
+Nothing is stored beyond the browser session: no accounts, no favourites, no cloud sync.
+
+## Quick start
+
+Requirements: Node.js 22.12 or newer (see `.nvmrc`) and npm.
+
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
-## Commands
-```bash
-npm run check
-npm run test
-npm run test:e2e
-npm run build
+Open http://localhost:4321/noodlestall/ (the site always lives under the `/noodlestall/` path, exactly as on GitHub Pages).
+
+## Everyday commands
+
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Development server with live reload |
+| `npm run validate` | Checks every recipe folder against the schema (fast) |
+| `npm run check` | TypeScript and Astro diagnostics |
+| `npm test` | Unit tests (Vitest) |
+| `npm run build` | Production build into `dist/` |
+| `npm run serve` | Serves `dist/` at http://localhost:4321/noodlestall/ |
+| `npm run test:e2e` | Browser tests with Playwright at 375 px, 768 px and 1440 px (run `npx playwright install chromium` once) |
+| `npm run verify` | `validate`, `check`, `test` and `build` in one go |
+
+## Adding, editing and deleting recipes
+
+Each recipe is a folder under `src/content/recipes/` containing `recipe.md` (YAML frontmatter plus optional Markdown notes) and its images:
+
+```
+src/content/recipes/
+  creamy-tomato-pasta/
+    recipe.md
+    cover.webp
+    step-01.webp
 ```
 
-## Site structure
-- `src/content/recipes/`: recipe folders and markdown recipe files
-- `src/pages/`: homepage, browse pages, and recipe detail pages
-- `src/components/`: UI blocks
-- `src/lib/`: scaling, search, and sharing helpers
-- `src/styles/global.css`: design tokens and styling
-- `docs/`: maintenance and deployment notes
+- Format reference: [`docs/RECIPE_FORMAT.md`](docs/RECIPE_FORMAT.md)
+- Step-by-step guide for people: [`docs/ADDING_RECIPES.md`](docs/ADDING_RECIPES.md)
+- Instructions for AI coding agents: [`AGENTS.md`](AGENTS.md)
+- Copy-and-paste prompt for an AI agent: [`docs/CODEX_ADD_RECIPE_PROMPT.md`](docs/CODEX_ADD_RECIPE_PROMPT.md)
 
-## Recipe maintenance
-- One folder per recipe.
-- Stable slug = folder name.
-- Recipes use numeric metric units only.
-- Missing optional images do not break the build.
+Adding or deleting a folder and pushing to `main` is enough; the site rebuilds itself.
 
-## GitHub Pages deployment
-This project is configured for the base path `/noodlestall/` and the site URL is:
-`https://noodlestall.github.io/noodlestall/`
+## Sample content
 
-## Authoring workflow
-Use the prompt template in `docs/CODEX_ADD_RECIPE_PROMPT.md` when adding a recipe from a source URL or recipe text.
+The six sample recipes ship with **placeholder illustrations** instead of photographs. Each `cover.svg` is labelled as such. Replace them with your own photos (`cover.webp` or `cover.jpg`) and update `coverImage` in the recipe file.
 
-## Notes
-The website is intentionally static, simple, and low-maintenance.
+## Deployment
+
+Pushing to `main` runs validation, type checks, unit and browser tests, builds the site and deploys it to GitHub Pages. Pull requests run the same checks without deploying. One-time repository setup and troubleshooting: [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
+
+## Design
+
+Typography does the work: `"American Typewriter", "Courier Prime", "Courier New", Georgia, serif`. American Typewriter is used where the system provides it (macOS, iOS); elsewhere the self-hosted, SIL-OFL-licensed Courier Prime takes over. Ivory paper, charcoal ink, thin rules, square controls, generous whitespace. Design tokens live at the top of `src/styles/global.css`.
+
+## Licence
+
+Code is released under the MIT licence (see `LICENSE`). Courier Prime is licensed under the SIL Open Font License 1.1 (`src/assets/fonts/OFL.txt`). Recipes and photographs belong to their authors.

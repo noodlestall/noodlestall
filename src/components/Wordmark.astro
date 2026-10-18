@@ -1,0 +1,24 @@
+---
+interface Props {
+  href: string;
+  tagline?: boolean;
+}
+const { href, tagline = true } = Astro.props;
+---
+
+<a class="wordmark" href={href} aria-label="Boathouse Noodles – home">
+  <span class="wordmark__row">
+    <svg class="wordmark__wing" viewBox="0 0 48 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+      <path d="M2 22 C 12 6, 28 4, 46 12" />
+      <path d="M8 26 C 18 14, 32 12, 46 17" />
+      <path d="M16 29 C 24 21, 34 20, 46 22" />
+    </svg>
+    <span class="wordmark__name">Boathouse Noodles</span>
+    <svg class="wordmark__wing" viewBox="0 0 48 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" style="transform: scaleX(-1)">
+      <path d="M2 22 C 12 6, 28 4, 46 12" />
+      <path d="M8 26 C 18 14, 32 12, 46 17" />
+      <path d="M16 29 C 24 21, 34 20, 46 22" />
+    </svg>
+  </span>
+  {tagline && <span class="wordmark__tagline">Personal Recipe Archive</span>}
+</a>

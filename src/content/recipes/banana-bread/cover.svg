@@ -1,4 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
-  <rect width="100%" height="100%" fill="#f6f4ea"/>
-  <text x="40" y="160" font-family="Georgia, serif" font-size="28" fill="#2d2a26">Banana Bread</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" role="img" aria-labelledby="t">
+  <title id="t">Banana Bread – placeholder illustration, replace with a photograph</title>
+  <rect width="1200" height="800" fill="#f4eee2"/>
+  <g fill="none" stroke="#2b2a27" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" transform="translate(0 -60)">
+
+    <path d="M300 600 v-160 q0 -120 120 -120 h260 q120 0 120 120 v160 z" fill="#8a6a4a"/>
+    <path d="M300 440 q0 -120 120 -120 h260 q120 0 120 120" stroke-width="5"/>
+    <path d="M340 320 q140 -60 300 -10" stroke="#4a3a30" stroke-width="8" opacity="0.6"/>
+    <rect x="300" y="600" width="500" height="40" fill="#d8c9ad"/>
+    <path d="M820 600 l80 -60 v-150 q0 -90 -80 -110" fill="#d8c9ad"/>
+    <path d="M820 440 q0 -90 -80 -110 M820 600 l80 -60 v-150"/>
+    <path d="M900 540 l-80 60" />
+    <path d="M250 680 q0 60 60 60 h600 q60 0 60 -60" stroke-width="4"/>
+    <path d="M760 700 q130 -150 170 -300 q-140 70 -170 300 z" fill="#e0b43c"/><path d="M790 650 q80 -110 120 -220"/>
+    <ellipse cx="860" cy="470" rx="22" ry="12" fill="#fbf7ee"/><ellipse cx="860" cy="520" rx="22" ry="12" fill="#fbf7ee"/>
+  </g>
+  <rect x="24" y="24" width="1152" height="752" fill="none" stroke="#2b2a27" stroke-width="2" opacity="0.35"/>
+  <text x="600" y="756" text-anchor="middle" font-family="'American Typewriter','Courier Prime','Courier New',monospace" font-size="22" fill="#2b2a27" opacity="0.6" letter-spacing="2">PLACEHOLDER ILLUSTRATION · REPLACE WITH A PHOTOGRAPH</text>
 </svg>

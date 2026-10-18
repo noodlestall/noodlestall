@@ -1,0 +1,200 @@
+---
+import { render } from 'astro:content';
+import { getImage } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CoverImage from '../../components/CoverImage.astro';
+import ServingControls from '../../components/ServingControls.astro';
+import IngredientList from '../../components/IngredientList.astro';
+import ShoppingList from '../../components/ShoppingList.astro';
+import StepList from '../../components/StepList.astro';
+import RelatedRecipes from '../../components/RelatedRecipes.astro';
+import {
+  categoryLabel,
+  cuisineLabel,
+  difficultyLabel,
+  getNumberedRecipes,
+  getRelatedRecipes,
+  totalMinutes,
+  type NumberedRecipe
+} from '../../lib/recipes';
+import { SITE, absoluteUrl, formatMinutes, formatRecipeNumber, isoDuration, recipePath, safeJson } from '../../lib/site';
+import { formatQuantity, formatQuantityWithUnit } from '../../lib/scaling';
+import { buildRecipeShareMessage, buildWhatsAppUrl } from '../../lib/sharing';
+import type { ClientRecipe } from '../../lib/shopping';
+
+export async function getStaticPaths() {
+  const all = await getNumberedRecipes();
+  return all.map((recipe) => ({
+    params: { id: recipe.entry.id },
+    props: { recipe, all }
+  }));
+}
+
+interface Props {
+  recipe: NumberedRecipe;
+  all: NumberedRecipe[];
+}
+
+const { recipe, all } = Astro.props;
+const { entry, number } = recipe;
+const { data } = entry;
+const { Content } = await render(entry);
+const hasNotes = Boolean(entry.body && entry.body.trim().length > 0);
+
+const base = import.meta.env.BASE_URL;
+const origin = Astro.site?.origin ?? SITE.url;
+const path = recipePath(base, entry.id);
+const url = absoluteUrl(origin, path);
+const related = getRelatedRecipes(recipe, all);
+const total = totalMinutes(data);
+const cuisine = cuisineLabel(data);
+
+let ogImage: string | undefined;
+if (data.coverImage) {
+  const processed =
+    data.coverImage.format === 'svg'
+      ? await getImage({ src: data.coverImage })
+      : await getImage({ src: data.coverImage, width: 1200, height: 800, fit: 'cover', format: 'jpg' });
+  ogImage = absoluteUrl(origin, processed.src);
+}
+
+const clientRecipe: ClientRecipe = {
+  id: entry.id,
+  title: data.title,
+  servings: data.servings,
+  url,
+  groups: data.ingredientGroups.map((group) => ({
+    title: group.title,
+    ingredients: group.ingredients.map((ingredient) => ({
+      name: ingredient.name,
+      quantity: ingredient.quantity ?? null,
+      unit: ingredient.unit ?? null,
+      note: ingredient.note ?? null,
+      optional: ingredient.optional
+    }))
+  }))
+};
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Recipe',
+  name: data.title,
+  description: data.description,
+  url,
+  ...(ogImage ? { image: [ogImage] } : {}),
+  recipeCategory: categoryLabel(data),
+  ...(cuisine ? { recipeCuisine: cuisine } : {}),
+  keywords: data.tags.join(', '),
+  recipeYield: `${formatQuantity(data.servings)} servings`,
+  prepTime: isoDuration(data.prepTimeMinutes),
+  cookTime: isoDuration(data.cookTimeMinutes),
+  totalTime: isoDuration(total),
+  recipeIngredient: data.ingredientGroups.flatMap((group) =>
+    group.ingredients.map((ingredient) =>
+      ingredient.quantity !== undefined && ingredient.unit !== undefined
+        ? `${formatQuantityWithUnit(ingredient.quantity, ingredient.unit)} ${ingredient.name}`
+        : `${ingredient.name}${ingredient.note ? ` (${ingredient.note})` : ''}`
+    )
+  ),
+  recipeInstructions: data.instructions.map((step, i) => ({
+    '@type': 'HowToStep',
+    position: i + 1,
+    ...(step.title ? { name: step.title } : {}),
+    text: step.text
+  })),
+  ...(data.source?.name ? { author: { '@type': 'Organization', name: data.source.name } } : {})
+};
+
+const shareUrl = buildWhatsAppUrl(buildRecipeShareMessage(data.title, url));
+const servingsNoun = data.servings === 1 ? 'serving' : 'servings';
+---
+
+<BaseLayout
+  title={data.title}
+  description={data.description}
+  path={path}
+  ogImage={ogImage}
+  ogType="article"
+  jsonLd={jsonLd}
+  current="recipe"
+>
+  <article class="sheet" data-recipe-id={entry.id}>
+    <header class="sheet__head">
+      <p class="eyebrow">
+        <strong>{formatRecipeNumber(number)}</strong> · {categoryLabel(data)}{cuisine && ` · ${cuisine}`}
+        {data.draft && <span class="entry__draft">Draft</span>}
+      </p>
+      <h1>{data.title}</h1>
+      <p class="lead">{data.description}</p>
+      <div class="sheet__actions">
+        <button type="button" class="btn btn--small" id="print-recipe">Print</button>
+        <button type="button" class="btn btn--small" id="copy-link" data-url={url}>Copy link</button>
+        <a class="btn btn--small" id="share-whatsapp" href={shareUrl} target="_blank" rel="noopener noreferrer">
+          Share via WhatsApp
+        </a>
+      </div>
+    </header>
+
+    <figure class="sheet__cover">
+      <CoverImage
+        image={data.coverImage}
+        alt={data.coverAlt ?? data.title}
+        title={data.title}
+        category={data.category}
+        variant="hero"
+        loading="eager"
+      />
+      {!data.coverImage && <figcaption>Draft – photograph pending</figcaption>}
+    </figure>
+
+    <dl class="meta-grid">
+      <div><dt>Prep</dt><dd>{formatMinutes(data.prepTimeMinutes)}</dd></div>
+      <div><dt>Cook</dt><dd>{formatMinutes(data.cookTimeMinutes)}</dd></div>
+      <div><dt>Total</dt><dd>{formatMinutes(total)}</dd></div>
+      <div><dt>Servings</dt><dd>{formatQuantity(data.servings)} {servingsNoun}</dd></div>
+      <div><dt>Difficulty</dt><dd>{difficultyLabel(data)}</dd></div>
+      {cuisine && <div><dt>Cuisine</dt><dd>{cuisine}</dd></div>}
+    </dl>
+
+    <div class="sheet__columns">
+      <aside class="sheet__aside">
+        <ServingControls servings={data.servings} />
+        <IngredientList groups={data.ingredientGroups} />
+        <ShoppingList recipe={clientRecipe} />
+      </aside>
+
+      <div>
+        <StepList instructions={data.instructions} />
+
+        {
+          hasNotes && (
+            <section class="notes" aria-labelledby="notes-heading">
+              <h2 class="section-title" id="notes-heading">Notes</h2>
+              <Content />
+            </section>
+          )
+        }
+
+        {
+          data.source?.name && (
+            <p class="source">
+              Source:{' '}
+              {data.source.url ? (
+                <a href={data.source.url} rel="noopener noreferrer">{data.source.name}</a>
+              ) : (
+                data.source.name
+              )}
+            </p>
+          )
+        }
+      </div>
+    </div>
+
+    <RelatedRecipes recipes={related} />
+  </article>
+
+  <script type="application/json" id="recipe-data" set:html={safeJson(clientRecipe)} />
+  <script>
+    import '../../scripts/recipe';
+  </script>
+</BaseLayout>

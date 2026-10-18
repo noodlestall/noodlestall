@@ -1,0 +1,40 @@
+---
+import { formatQuantityWithUnit } from '../lib/scaling';
+import { itemKey } from '../lib/shopping';
+import type { IngredientGroup } from '../lib/recipe-schema';
+
+interface Props {
+  groups: IngredientGroup[];
+}
+const { groups } = Astro.props;
+const showGroupTitles = groups.length > 1;
+---
+
+<section aria-labelledby="ingredients-heading">
+  <h2 class="section-title" id="ingredients-heading">Ingredients</h2>
+  {
+    groups.map((group, g) => (
+      <div class="ingredient-group">
+        {showGroupTitles && <h3>{group.title}</h3>}
+        <ul class="ingredient-list">
+          {group.ingredients.map((ingredient, i) => (
+            <li class="ingredient">
+              {ingredient.quantity !== undefined && ingredient.unit !== undefined ? (
+                <span class="ingredient__qty" data-ingredient-qty={itemKey(g, i)}>
+                  {formatQuantityWithUnit(ingredient.quantity, ingredient.unit)}
+                </span>
+              ) : (
+                <span class="ingredient__qty ingredient__qty--none">—</span>
+              )}
+              <span>
+                {ingredient.name}
+                {ingredient.optional && <span class="eyebrow"> (optional)</span>}
+                {ingredient.note && <span class="ingredient__note">{ingredient.note}</span>}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))
+  }
+</section>

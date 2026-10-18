@@ -2,8 +2,8 @@
 dist/
 .astro/
 
-# Node
-dnode_modules/
+# Dependencies
+node_modules/
 
 # Logs
 npm-debug.log*
@@ -13,6 +13,7 @@ npm-debug.log*
 
 # Editor
 .vscode/
+.idea/
 
 # Environment
 .env
