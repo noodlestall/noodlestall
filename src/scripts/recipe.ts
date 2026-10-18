@@ -147,12 +147,6 @@ if (recipe) {
     });
   }
 
-  document.getElementById('shopping-reset')?.addEventListener('click', () => {
-    checked.clear();
-    removeSession(keys.shopping);
-    renderShopping();
-  });
-
   document.getElementById('shopping-copy')?.addEventListener('click', async () => {
     const ok = await copyText(shoppingMessage());
     toast(ok ? 'Shopping list copied' : 'Could not copy – select the list and copy it by hand');

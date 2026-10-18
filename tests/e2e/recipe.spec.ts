@@ -142,9 +142,9 @@ test.describe('Recipe sheet', () => {
     await page.reload();
     await shopping.locator('summary').click();
     await expect(first).toBeChecked();
+    await expect(page.getByRole('button', { name: 'Reset ticks' })).toHaveCount(0);
 
-    await page.getByRole('button', { name: 'Reset ticks' }).click();
-    await expect(first).not.toBeChecked();
+    await first.uncheck();
     await expect(page.locator('#shopping-status')).toHaveText('11 items still to buy.');
   });
 
