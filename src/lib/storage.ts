@@ -5,8 +5,7 @@
 
 export const storageKeys = {
   servings: (id: string) => `bn:servings:${id}`,
-  shopping: (id: string) => `bn:shopping:${id}`,
-  steps: (id: string) => `bn:steps:${id}`
+  shopping: (id: string) => `bn:shopping:${id}`
 };
 
 function getSession(): Storage | null {

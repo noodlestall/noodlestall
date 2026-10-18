@@ -1,6 +1,6 @@
 /**
  * Recipe sheet interactions: serving scaling, shopping checklist,
- * step completion, printing and sharing. State lives in sessionStorage.
+ * printing and sharing. State lives in sessionStorage.
  */
 import { formatQuantity, parseServings, stepServings } from '../lib/scaling';
 import { buildShoppingListMessage, buildWhatsAppUrl } from '../lib/sharing';
@@ -47,8 +47,7 @@ async function copyText(text: string): Promise<boolean> {
 if (recipe) {
   const keys = {
     servings: storageKeys.servings(recipe.id),
-    shopping: storageKeys.shopping(recipe.id),
-    steps: storageKeys.steps(recipe.id)
+    shopping: storageKeys.shopping(recipe.id)
   };
 
   /* ---------------- Servings & scaling ---------------- */
@@ -160,37 +159,6 @@ if (recipe) {
     toast(ok ? 'Shopping list copied' : 'Could not copy – select the list and copy it by hand');
   });
 
-  /* ---------------- Steps ---------------- */
-
-  const stepInputs = [...document.querySelectorAll<HTMLInputElement>('[data-step-check]')];
-  const stepsStatus = document.getElementById('steps-status');
-  const doneSteps = new Set<number>(readSession<number[]>(keys.steps, []));
-
-  function renderSteps() {
-    for (const box of stepInputs) {
-      const index = Number(box.dataset.stepCheck);
-      box.checked = doneSteps.has(index);
-      box.closest('.step')?.classList.toggle('step--done', box.checked);
-    }
-    if (stepsStatus) stepsStatus.textContent = `${doneSteps.size} of ${stepInputs.length} steps done`;
-  }
-
-  for (const box of stepInputs) {
-    box.addEventListener('change', () => {
-      const index = Number(box.dataset.stepCheck);
-      if (box.checked) doneSteps.add(index);
-      else doneSteps.delete(index);
-      writeSession(keys.steps, [...doneSteps]);
-      renderSteps();
-    });
-  }
-
-  document.getElementById('steps-reset')?.addEventListener('click', () => {
-    doneSteps.clear();
-    removeSession(keys.steps);
-    renderSteps();
-  });
-
   /* ---------------- Print & share ---------------- */
 
   document.getElementById('print-recipe')?.addEventListener('click', () => window.print());
@@ -203,5 +171,4 @@ if (recipe) {
 
   renderServings();
   renderShopping();
-  renderSteps();
 }

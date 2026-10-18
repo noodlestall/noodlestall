@@ -994,9 +994,6 @@ input[type='checkbox']:checked::before {
 }
 
 .step {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: var(--space-3) var(--space-4);
   padding-block: var(--space-5);
   border-top: var(--rule-width) solid var(--rule);
 }
@@ -1008,10 +1005,6 @@ input[type='checkbox']:checked::before {
 
 .step:last-child {
   border-bottom: var(--rule-width) solid var(--rule);
-}
-
-.step__check {
-  margin-top: 0.2rem;
 }
 
 .step__body {
@@ -1049,22 +1042,6 @@ input[type='checkbox']:checked::before {
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
-}
-
-.step--done .step__title,
-.step--done .step__text {
-  color: var(--ink-faint);
-}
-
-.steps-tools {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  margin-top: var(--space-3);
-  font-size: var(--text-xs);
-  color: var(--ink-soft);
 }
 
 /* Notes & source */
@@ -1146,8 +1123,6 @@ input[type='checkbox']:checked::before {
   .sheet__actions,
   .servings__row,
   .shopping,
-  .step__check,
-  .steps-tools,
   .site-footer,
   .skip-link,
   .toast {
@@ -1172,7 +1147,6 @@ input[type='checkbox']:checked::before {
   }
 
   .step {
-    grid-template-columns: 1fr;
     break-inside: avoid;
   }
 

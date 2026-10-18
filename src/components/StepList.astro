@@ -14,14 +14,12 @@ const { instructions } = Astro.props;
     {
       instructions.map((step, i) => {
         const n = String(i + 1).padStart(2, '0');
-        const inputId = `step-${i + 1}`;
         return (
           <li class="step" data-step={i}>
-            <input class="step__check" type="checkbox" id={inputId} data-step-check={i} aria-label={`Mark step ${i + 1} as done`} />
             <div class="step__body">
               <h3 class="step__title">
                 <span class="step__number" aria-hidden="true">{n}</span>
-                <label for={inputId}>{step.title ?? `Step ${i + 1}`}</label>
+                <span>{step.title ?? `Step ${i + 1}`}</span>
               </h3>
               <p class="step__text">{step.text}</p>
               {step.image && (
@@ -39,8 +37,4 @@ const { instructions } = Astro.props;
       })
     }
   </ol>
-  <div class="steps-tools">
-    <span id="steps-status" aria-live="polite">0 of {instructions.length} steps done</span>
-    <button type="button" class="btn btn--small btn--quiet" id="steps-reset">Reset steps</button>
-  </div>
 </section>

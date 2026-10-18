@@ -165,22 +165,12 @@ test.describe('Recipe sheet', () => {
     expect(message).toBe('Creamy Tomato Pasta – Boathouse Noodles\nhttps://noodlestall.github.io/noodlestall/recipes/creamy-tomato-pasta/');
   });
 
-  test('tracks completed steps and remembers them during the session', async ({ page }) => {
+  test('shows the method as plain numbered steps without checkboxes', async ({ page }) => {
     await page.goto(PASTA);
-    const status = page.locator('#steps-status');
-    await expect(status).toHaveText('0 of 5 steps done');
-
-    await page.getByLabel('Mark step 1 as done').check();
-    await page.getByLabel('Mark step 3 as done').check();
-    await expect(status).toHaveText('2 of 5 steps done');
-    await expect(page.locator('.step--done')).toHaveCount(2);
-
-    await page.reload();
-    await expect(status).toHaveText('2 of 5 steps done');
-    await expect(page.getByLabel('Mark step 1 as done')).toBeChecked();
-
-    await page.getByRole('button', { name: 'Reset steps' }).click();
-    await expect(status).toHaveText('0 of 5 steps done');
+    await expect(page.locator('#steps .step')).toHaveCount(5);
+    await expect(page.locator('#steps input')).toHaveCount(0);
+    await expect(page.locator('#steps-status, #steps-reset')).toHaveCount(0);
+    await expect(page.locator('.step__title').first()).toContainText('Cook the pasta');
   });
 
   test('is operable from the keyboard', async ({ page }) => {
@@ -189,9 +179,9 @@ test.describe('Recipe sheet', () => {
     await page.keyboard.press('Enter');
     await expect(quantity(page, '0-0')).toHaveText('300 g');
 
-    await page.getByLabel('Mark step 1 as done').focus();
-    await page.keyboard.press('Space');
-    await expect(page.locator('#steps-status')).toHaveText('1 of 5 steps done');
+    await page.locator('#shopping summary').focus();
+    await page.keyboard.press('Enter');
+    await expect(page.locator('#shopping')).toHaveAttribute('open', '');
 
     const focusVisible = await page.evaluate(() => {
       const el = document.activeElement as HTMLElement;
@@ -212,7 +202,7 @@ test.describe('Recipe sheet', () => {
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth);
     expect(overflow).toBe(false);
 
-    const boxes = await page.locator('.btn, .servings__input, .step__check').evaluateAll((els) => els.map((el) => el.getBoundingClientRect().height));
+    const boxes = await page.locator('.btn, .servings__input, .shopping input[type="checkbox"]').evaluateAll((els) => els.map((el) => el.getBoundingClientRect().height));
     for (const height of boxes) expect(height).toBeGreaterThanOrEqual(24);
   });
 

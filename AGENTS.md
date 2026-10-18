@@ -8,7 +8,7 @@ Boathouse Noodles is a personal recipe archive for family and friends, published
 
 - Homepage index of every recipe with a photograph, number, title, category, time and difficulty.
 - Instant client-side search (names, ingredients, tags) and category filters.
-- Recipe sheets with ingredient scaling, step checkboxes, printing, link copying and WhatsApp sharing.
+- Recipe sheets with ingredient scaling, printing, link copying and WhatsApp sharing.
 - A per-recipe shopping list with scaled quantities that can be ticked off, copied or shared.
 
 There is no backend, database, login, editor, favourites, meal planning, nutrition data or imperial conversion. Do not add any of these.
