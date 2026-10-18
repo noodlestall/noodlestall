@@ -7,13 +7,11 @@ import ServingControls from '../../components/ServingControls.astro';
 import IngredientList from '../../components/IngredientList.astro';
 import ShoppingList from '../../components/ShoppingList.astro';
 import StepList from '../../components/StepList.astro';
-import RelatedRecipes from '../../components/RelatedRecipes.astro';
 import {
   categoryLabel,
   cuisineLabel,
   difficultyLabel,
   getNumberedRecipes,
-  getRelatedRecipes,
   totalMinutes,
   type NumberedRecipe
 } from '../../lib/recipes';
@@ -26,16 +24,15 @@ export async function getStaticPaths() {
   const all = await getNumberedRecipes();
   return all.map((recipe) => ({
     params: { id: recipe.entry.id },
-    props: { recipe, all }
+    props: { recipe }
   }));
 }
 
 interface Props {
   recipe: NumberedRecipe;
-  all: NumberedRecipe[];
 }
 
-const { recipe, all } = Astro.props;
+const { recipe } = Astro.props;
 const { entry, number } = recipe;
 const { data } = entry;
 const { Content } = await render(entry);
@@ -45,7 +42,6 @@ const base = import.meta.env.BASE_URL;
 const origin = Astro.site?.origin ?? SITE.url;
 const path = recipePath(base, entry.id);
 const url = absoluteUrl(origin, path);
-const related = getRelatedRecipes(recipe, all);
 const total = totalMinutes(data);
 const cuisine = cuisineLabel(data);
 
@@ -190,7 +186,6 @@ const servingsNoun = data.servings === 1 ? 'serving' : 'servings';
       </div>
     </div>
 
-    <RelatedRecipes recipes={related} />
   </article>
 
   <script type="application/json" id="recipe-data" set:html={safeJson(clientRecipe)} />

@@ -59,29 +59,3 @@ export function toIndexEntry({ entry, number }: NumberedRecipe): RecipeIndexEntr
     searchText: buildSearchText({ title: data.title, tags: data.tags, ingredients })
   };
 }
-
-/**
- * Related recipes: explicit `related` slugs first, then same category,
- * then shared tags. Never includes the recipe itself.
- */
-export function getRelatedRecipes(current: NumberedRecipe, all: NumberedRecipe[], limit = 3): NumberedRecipe[] {
-  const others = all.filter((r) => r.entry.id !== current.entry.id);
-  const explicit = current.entry.data.related
-    .map((id) => others.find((r) => r.entry.id === id))
-    .filter((r): r is NumberedRecipe => Boolean(r));
-
-  const tags = new Set(current.entry.data.tags);
-  const scored = others
-    .filter((r) => !explicit.includes(r))
-    .map((r) => {
-      let score = 0;
-      if (r.entry.data.category === current.entry.data.category) score += 3;
-      for (const tag of r.entry.data.tags) if (tags.has(tag)) score += 1;
-      return { r, score };
-    })
-    .filter(({ score }) => score > 0)
-    .sort((a, b) => b.score - a.score || a.r.number - b.r.number)
-    .map(({ r }) => r);
-
-  return [...explicit, ...scored].slice(0, limit);
-}

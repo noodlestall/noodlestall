@@ -50,8 +50,7 @@ Things the agent will not do on its own, by design:
 ## Deleting a recipe
 
 1. Delete the folder `src/content/recipes/<slug>/`.
-2. If another recipe lists the slug under `related:`, remove it there.
-3. Run `npm run build` to confirm, then commit and push.
+2. Run `npm run build` to confirm, then commit and push.
 
 ## Images
 

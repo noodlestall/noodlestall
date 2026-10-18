@@ -3,7 +3,6 @@
  * Entries are pre-rendered A–Z; this script only hides and shows them.
  */
 import {
-  EMPTY_FILTERS,
   applyFilters,
   hasActiveFilters,
   parseFilters,
@@ -29,7 +28,6 @@ if (dataNode && list && form) {
 
   const input = $<HTMLInputElement>('#q')!;
   const categoryChips = [...form.querySelectorAll<HTMLAnchorElement>('[data-category]')];
-  const clearButton = $<HTMLButtonElement>('#clear-filters')!;
   const status = $<HTMLElement>('#results-status')!;
   const empty = $<HTMLElement>('#empty-state')!;
 
@@ -42,7 +40,6 @@ if (dataNode && list && form) {
       if (active) chip.setAttribute('aria-current', 'true');
       else chip.removeAttribute('aria-current');
     }
-    clearButton.disabled = !hasActiveFilters(state);
   }
 
   function syncUrl() {
@@ -89,12 +86,6 @@ if (dataNode && list && form) {
       update({ category: state.category === category ? '' : category });
     });
   }
-
-  clearButton.addEventListener('click', () => {
-    state = { ...EMPTY_FILTERS };
-    render();
-    input.focus();
-  });
 
   window.addEventListener('popstate', () => {
     state = parseFilters(new URLSearchParams(window.location.search));

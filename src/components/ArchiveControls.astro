@@ -5,12 +5,9 @@ const base = import.meta.env.BASE_URL;
 ---
 
 <form class="controls" id="search" action={base} method="get" role="search" aria-label="Search and filter recipes">
-  <div class="controls__search">
-    <div class="field">
-      <label for="q">Search recipes, ingredients and tags</label>
-      <input type="search" id="q" name="q" placeholder="e.g. tomato, vegan, soup" autocomplete="off" spellcheck="false" />
-    </div>
-    <button type="button" class="btn btn--quiet" id="clear-filters">Clear filters</button>
+  <div class="field controls__search">
+    <label for="q">Search recipes, ingredients and tags</label>
+    <input type="search" id="q" name="q" placeholder="e.g. tomato, vegan, soup" autocomplete="off" spellcheck="false" />
   </div>
 
   <nav class="chip-row" id="categories" aria-label="Categories">

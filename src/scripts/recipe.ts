@@ -2,7 +2,7 @@
  * Recipe sheet interactions: serving scaling, shopping checklist,
  * step completion, printing and sharing. State lives in sessionStorage.
  */
-import { formatQuantity, parseServings, presetServings, stepServings } from '../lib/scaling';
+import { formatQuantity, parseServings, stepServings } from '../lib/scaling';
 import { buildShoppingListMessage, buildWhatsAppUrl } from '../lib/sharing';
 import { buildShoppingGroups, itemKey, scaledQuantityLabel, shoppingLabel, type ClientRecipe } from '../lib/shopping';
 import { readSession, removeSession, storageKeys, writeSession } from '../lib/storage';
@@ -55,7 +55,6 @@ if (recipe) {
 
   const input = document.getElementById('servings-input') as HTMLInputElement | null;
   const note = document.getElementById('servings-note');
-  const presetButtons = [...document.querySelectorAll<HTMLButtonElement>('[data-servings-preset]')];
   const quantityNodes = new Map<string, HTMLElement>();
   for (const node of document.querySelectorAll<HTMLElement>('[data-ingredient-qty]')) {
     quantityNodes.set(node.dataset.ingredientQty ?? '', node);
@@ -72,10 +71,6 @@ if (recipe) {
         if (node && label) node.textContent = label;
       });
     });
-    for (const button of presetButtons) {
-      const factor = Number(button.dataset.servingsPreset);
-      button.setAttribute('aria-pressed', String(presetServings(recipe!.servings, factor) === servings));
-    }
     if (note) {
       note.textContent =
         servings === recipe!.servings
@@ -102,10 +97,6 @@ if (recipe) {
   for (const button of document.querySelectorAll<HTMLButtonElement>('[data-servings-step]')) {
     button.addEventListener('click', () => setServings(stepServings(servings, button.dataset.servingsStep === '1' ? 1 : -1)));
   }
-  for (const button of presetButtons) {
-    button.addEventListener('click', () => setServings(presetServings(recipe!.servings, Number(button.dataset.servingsPreset))));
-  }
-  document.getElementById('servings-reset')?.addEventListener('click', () => setServings(recipe!.servings));
 
   /* ---------------- Shopping list ---------------- */
 

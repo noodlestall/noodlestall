@@ -45,6 +45,3 @@ export function stepServings(current: number, direction: 1 | -1): number {
   return parseServings(current <= 1 ? current - 0.5 : Math.ceil(current) - 1, current);
 }
 
-export function presetServings(originalServings: number, factor: number): number {
-  return parseServings(originalServings * factor, originalServings);
-}

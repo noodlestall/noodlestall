@@ -70,8 +70,6 @@ instructions:
 source:
   name: Boathouse kitchen notebook
   url: null
-related:
-  - shakshuka
 ---
 
 The sauce thickens quickly once the cream goes in. Loosen it with pasta water rather than more cream.
@@ -96,7 +94,6 @@ The sauce thickens quickly once the cream goes in. Loosen it with pasta water ra
 | `ingredientGroups` | yes | One or more groups, each with a `title` and at least one ingredient. Group titles are hidden when there is only one group. |
 | `instructions` | yes | One or more steps in order. |
 | `source` | no | `name` and optional `url` of where the recipe comes from. Use `url: null` when there is none. |
-| `related` | no | Slugs of recipes to show first under "See also". Others are chosen automatically by category and tags. |
 
 ### Ingredients
 

@@ -92,7 +92,7 @@ test.describe('Recipe index', () => {
     await expect(page.locator('#results-status')).toHaveText(`Showing all ${data.length} recipes`);
   });
 
-  test('category chips filter, combine with search and clear', async ({ page }) => {
+  test('category chips filter, combine with search and reset', async ({ page }) => {
     await page.goto('./');
     const data = await indexData(page);
 
@@ -114,10 +114,33 @@ test.describe('Recipe index', () => {
     await page.getByLabel('Search recipes, ingredients and tags').fill('zzzz');
     await expect(page.locator('#empty-state')).toBeVisible();
 
-    await page.getByRole('button', { name: 'Clear filters' }).click();
+    await page.getByLabel('Search recipes, ingredients and tags').fill('');
+    await page.locator('[data-category=""]').click();
     await expect.poll(() => visibleTitles(page)).toHaveLength(data.length);
     await expect(page).toHaveURL(/\/noodlestall\/$/);
-    await expect(page.getByRole('button', { name: 'Clear filters' })).toBeDisabled();
+    await expect(page.getByRole('button', { name: 'Clear filters' })).toHaveCount(0);
+  });
+
+  test('the whole entry is clickable, not just the title', async ({ page }) => {
+    await page.goto('./');
+    const data = await indexData(page);
+    const [first, second] = data;
+    expect(first && second).toBeTruthy();
+    const entry = page.locator('#recipe-index .entry').first();
+    await expect(entry.getByRole('link')).toHaveCount(1);
+
+    // Click the description text, well away from the title link.
+    const desc = await entry.locator('.entry__desc').boundingBox();
+    await page.mouse.click(desc!.x + desc!.width / 2, desc!.y + desc!.height / 2);
+    await expect(page).toHaveURL(new RegExp(`/recipes/${first!.id}/$`));
+
+    // Click the photograph of the second entry.
+    await page.goBack();
+    const mediaLocator = page.locator('#recipe-index .entry').nth(1).locator('.entry__media');
+    await mediaLocator.scrollIntoViewIfNeeded();
+    const media = await mediaLocator.boundingBox();
+    await page.mouse.click(media!.x + media!.width / 2, media!.y + media!.height / 2);
+    await expect(page).toHaveURL(new RegExp(`/recipes/${second!.id}/$`));
   });
 
   test('offers no dropdowns, sorting or letter index', async ({ page }) => {

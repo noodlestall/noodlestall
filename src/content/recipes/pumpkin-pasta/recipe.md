@@ -40,7 +40,8 @@ ingredientGroups:
         quantity: 1
         unit: piece
       - name: Tomato purée
-        note: 2 tablespoons
+        quantity: 30
+        unit: g
       - name: Olive oil
         quantity: 75
         unit: ml

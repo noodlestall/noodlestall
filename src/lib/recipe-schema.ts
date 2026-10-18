@@ -105,8 +105,7 @@ export function buildRecipeSchema<TImage extends z.ZodType>(image: TImage) {
       tags: z.array(z.string().transform(lower)).default([]),
       ingredientGroups: z.array(ingredientGroupSchema).min(1),
       instructions: z.array(instructionSchema).min(1),
-      source: sourceSchema.optional(),
-      related: z.array(z.string().trim().min(1)).default([])
+      source: sourceSchema.optional()
     })
     .superRefine((recipe, ctx) => {
       if (!recipe.draft && !recipe.coverImage) {

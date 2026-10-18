@@ -4,7 +4,6 @@ import {
   formatQuantityWithUnit,
   formatUnit,
   parseServings,
-  presetServings,
   scaleQuantity,
   stepServings
 } from '../../src/lib/scaling';
@@ -92,12 +91,5 @@ describe('stepServings and presets', () => {
     expect(stepServings(0.5, -1)).toBe(0.5);
     expect(stepServings(2.5, 1)).toBe(3);
     expect(stepServings(2.5, -1)).toBe(2);
-  });
-
-  it('computes ½×, 1× and 2× from the original servings', () => {
-    expect(presetServings(2, 0.5)).toBe(1);
-    expect(presetServings(2, 1)).toBe(2);
-    expect(presetServings(2, 2)).toBe(4);
-    expect(presetServings(1, 0.5)).toBe(0.5);
   });
 });

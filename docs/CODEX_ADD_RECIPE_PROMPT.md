@@ -27,7 +27,7 @@ When you are done, report: the slug, the conversions you made, anything you left
 
 **Editing an existing recipe:** "Edit src/content/recipes/<slug>/recipe.md: [describe the change]. Keep the slug. Validate and commit on a branch named recipe/<slug>-update."
 
-**Deleting:** "Delete the recipe folder src/content/recipes/<slug>/, remove the slug from any related: lists, run npm run build, and commit on a branch named recipe/remove-<slug>."
+**Deleting:** "Delete the recipe folder src/content/recipes/<slug>/, run npm run build, and commit on a branch named recipe/remove-<slug>."
 
 ## What to check before merging
 

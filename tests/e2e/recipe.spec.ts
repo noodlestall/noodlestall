@@ -7,7 +7,7 @@ function quantity(page: import('@playwright/test').Page, key: string) {
 }
 
 test.describe('Recipe sheet', () => {
-  test('renders the sheet with metadata, ingredients, steps, notes and related recipes', async ({ page }) => {
+  test('renders the sheet with metadata, ingredients, steps and notes', async ({ page }) => {
     await page.goto(PASTA);
     await expect(page).toHaveTitle('Creamy Tomato Pasta – Boathouse Noodles');
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('Creamy Tomato Pasta');
@@ -18,7 +18,7 @@ test.describe('Recipe sheet', () => {
     await expect(page.locator('.step')).toHaveCount(5);
     await expect(page.locator('.step__image img')).toHaveCount(2);
     await expect(page.getByRole('heading', { name: 'Notes' })).toBeVisible();
-    await expect(page.locator('.related .entry')).toHaveCount(3);
+    await expect(page.locator('.related')).toHaveCount(0);
 
     const jsonLd = await page.locator('script[type="application/ld+json"]').textContent();
     const data = JSON.parse(jsonLd ?? '{}');
@@ -45,14 +45,15 @@ test.describe('Recipe sheet', () => {
     await expect(quantity(page, '1-1')).toHaveText('3 pieces');
     await expect(page.locator('#servings-note')).toHaveText('Scaled from 2 to 3 servings.');
 
-    await page.getByRole('button', { name: '½×' }).click();
-    await expect(input).toHaveValue('1');
+    await input.fill('1');
+    await input.press('Enter');
     await expect(quantity(page, '0-0')).toHaveText('100 g');
     await expect(quantity(page, '1-1')).toHaveText('1 piece');
-    await expect(page.getByRole('button', { name: '½×' })).toHaveAttribute('aria-pressed', 'true');
 
-    await page.getByRole('button', { name: '2×' }).click();
+    await input.fill('4');
+    await input.press('Enter');
     await expect(quantity(page, '0-0')).toHaveText('400 g');
+    await expect(page.locator('[data-servings-preset], #servings-reset')).toHaveCount(0);
 
     await input.fill('3');
     await input.press('Enter');
@@ -66,8 +67,8 @@ test.describe('Recipe sheet', () => {
     await expect(quantity(page, '0-0')).toHaveText('50 g');
     await expect(quantity(page, '1-1')).toHaveText('0.5 pieces');
 
-    await page.getByRole('button', { name: 'Reset', exact: true }).click();
-    await expect(input).toHaveValue('2');
+    await input.fill('2');
+    await input.press('Enter');
     await expect(quantity(page, '0-0')).toHaveText('200 g');
 
     await input.fill('0');
@@ -91,7 +92,8 @@ test.describe('Recipe sheet', () => {
 
   test('keeps the servings selection while the tab is open', async ({ page }) => {
     await page.goto(PASTA);
-    await page.getByRole('button', { name: '2×' }).click();
+    await page.getByRole('button', { name: 'More servings' }).click();
+    await page.getByRole('button', { name: 'More servings' }).click();
     await page.reload();
     await expect(page.getByLabel('Number of servings')).toHaveValue('4');
     await expect(quantity(page, '0-0')).toHaveText('400 g');
@@ -109,7 +111,8 @@ test.describe('Recipe sheet', () => {
     await expect(shopping.locator('[data-shopping-label="1-6"]')).toHaveText('Black pepper (to taste)');
     await expect(shopping.locator('[data-shopping-label="1-5"]')).toHaveText('Fresh basil (a small handful, optional)');
 
-    await page.getByRole('button', { name: '2×' }).click();
+    await page.getByRole('button', { name: 'More servings' }).click();
+    await page.getByRole('button', { name: 'More servings' }).click();
     await expect(firstLabel).toHaveText('400 g Spaghetti');
 
     await first.check();

@@ -527,14 +527,7 @@ input[type='checkbox']:checked::before {
 }
 
 .controls__search {
-  display: flex;
-  align-items: end;
-  gap: var(--space-3);
   max-width: 40rem;
-}
-
-.controls__search .field {
-  flex: 1 1 auto;
 }
 
 .chip-row {
@@ -570,12 +563,17 @@ input[type='checkbox']:checked::before {
 }
 
 .entry {
+  position: relative;
   display: grid;
   grid-template-columns: 6rem 1fr;
   gap: var(--space-4);
   align-items: start;
   padding-block: var(--space-5);
   border-top: var(--rule-width) solid var(--rule);
+}
+
+.entry:hover {
+  background: var(--paper-deep);
 }
 
 .entry[hidden] {
@@ -612,8 +610,24 @@ input[type='checkbox']:checked::before {
   text-decoration: none;
 }
 
-.entry__title a:hover {
+/* Stretch the title link over the whole entry so the entire panel is clickable. */
+.entry__title a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.entry:hover .entry__title a {
   text-decoration: underline;
+}
+
+.entry:focus-within {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.entry__title a:focus-visible {
+  outline: none;
 }
 
 .entry__meta {
@@ -819,12 +833,6 @@ input[type='checkbox']:checked::before {
 .servings__input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
-}
-
-.servings__presets {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
 }
 
 .servings__note {
@@ -1082,29 +1090,6 @@ input[type='checkbox']:checked::before {
   color: var(--ink-soft);
 }
 
-/* Related */
-
-.related {
-  margin-top: var(--space-8);
-}
-
-.related-list {
-  list-style: none;
-  display: grid;
-  gap: var(--space-4);
-  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
-}
-
-.related-list .entry {
-  grid-template-columns: 4.5rem 1fr;
-  gap: var(--space-3);
-  padding-block: var(--space-3);
-}
-
-.related-list .entry__title {
-  font-size: var(--text-base);
-}
-
 /* ---- 404 ------------------------------------------------------ */
 
 .not-found {
@@ -1160,11 +1145,9 @@ input[type='checkbox']:checked::before {
   .site-nav,
   .sheet__actions,
   .servings__row,
-  .servings__presets,
   .shopping,
   .step__check,
   .steps-tools,
-  .related,
   .site-footer,
   .skip-link,
   .toast {

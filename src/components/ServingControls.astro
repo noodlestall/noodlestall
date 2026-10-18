@@ -25,11 +25,5 @@ const { servings } = Astro.props;
     />
     <button type="button" class="btn" data-servings-step="1" aria-label="More servings">+</button>
   </div>
-  <div class="servings__presets" role="group" aria-label="Serving presets">
-    <button type="button" class="btn btn--small" data-servings-preset="0.5" aria-pressed="false">½×</button>
-    <button type="button" class="btn btn--small" data-servings-preset="1" aria-pressed="true">1×</button>
-    <button type="button" class="btn btn--small" data-servings-preset="2" aria-pressed="false">2×</button>
-    <button type="button" class="btn btn--small btn--quiet" id="servings-reset">Reset</button>
-  </div>
   <p class="servings__note" id="servings-note" aria-live="polite">Original recipe for {formatQuantity(servings)} {servings === 1 ? 'serving' : 'servings'}.</p>
 </section>

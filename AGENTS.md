@@ -128,7 +128,7 @@ Edit `recipe.md` in place. Keep the slug unchanged so links keep working. Re-run
 
 ## Deleting a recipe
 
-Delete the whole folder under `src/content/recipes/`. Re-run `npm run build` to confirm nothing else referenced it (the `related:` list of another recipe may mention the slug; remove it there).
+Delete the whole folder under `src/content/recipes/`. Re-run `npm run build` to confirm the site still builds.
 
 ## Code changes
 
