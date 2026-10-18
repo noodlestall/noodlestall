@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 
-const PASTA = './recipes/creamy-tomato-pasta/';
+const PASTA = './recipes/pumpkin-pasta/';
+const SALAD = './recipes/smashed-cucumber-salad/';
 
 function quantity(page: import('@playwright/test').Page, key: string) {
   return page.locator(`[data-ingredient-qty="${key}"]`);
@@ -9,89 +10,91 @@ function quantity(page: import('@playwright/test').Page, key: string) {
 test.describe('Recipe sheet', () => {
   test('renders the sheet with metadata, ingredients, steps and notes', async ({ page }) => {
     await page.goto(PASTA);
-    await expect(page).toHaveTitle('Creamy Tomato Pasta – Boathouse Noodles');
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Creamy Tomato Pasta');
+    await expect(page).toHaveTitle('Pumpkin Pasta with Walnuts – Boathouse Noodles');
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Pumpkin Pasta with Walnuts');
     await expect(page.locator('.sheet__cover img')).toHaveCount(1);
     await expect(page.locator('.meta-grid dt')).toHaveText(['Prep', 'Cook', 'Total', 'Servings', 'Difficulty', 'Cuisine']);
-    await expect(page.locator('.meta-grid dd').nth(0)).toHaveText('10 min');
-    await expect(page.locator('.meta-grid dd').nth(2)).toHaveText('30 min');
-    await expect(page.locator('.meta-grid dd').nth(3).getByLabel('Number of servings')).toHaveValue('2');
+    await expect(page.locator('.meta-grid dd').nth(0)).toHaveText('15 min');
+    await expect(page.locator('.meta-grid dd').nth(2)).toHaveText('35 min');
+    await expect(page.locator('.meta-grid dd').nth(3).getByLabel('Number of servings')).toHaveValue('4');
     await expect(page.locator('.meta-grid dd').nth(4)).toHaveText('Easy');
-    await expect(page.locator('.ingredient')).toHaveCount(9);
+    await expect(page.locator('.meta-grid dd').nth(5)).toHaveText('Italian');
+    await expect(page.locator('.ingredient')).toHaveCount(11);
     await expect(page.locator('.step')).toHaveCount(5);
-    await expect(page.locator('.step__image img')).toHaveCount(2);
     await expect(page.getByRole('heading', { name: 'Notes' })).toBeVisible();
     await expect(page.locator('.related')).toHaveCount(0);
 
     const jsonLd = await page.locator('script[type="application/ld+json"]').textContent();
     const data = JSON.parse(jsonLd ?? '{}');
     expect(data['@type']).toBe('Recipe');
-    expect(data.recipeIngredient).toContain('200 g Spaghetti');
-    expect(data.totalTime).toBe('PT30M');
+    expect(data.recipeIngredient).toContain('400 g Spaghetti');
+    expect(data.totalTime).toBe('PT35M');
     expect(data.aggregateRating).toBeUndefined();
     expect(data.nutrition).toBeUndefined();
 
-    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://noodlestall.github.io/noodlestall/recipes/creamy-tomato-pasta/');
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://noodlestall.github.io/noodlestall/recipes/pumpkin-pasta/');
     await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /^https:\/\/noodlestall\.github\.io\/noodlestall\//);
   });
 
   test('scales ingredients from the original quantities', async ({ page }) => {
     await page.goto(PASTA);
     const input = page.getByLabel('Number of servings');
-    await expect(input).toHaveValue('2');
-    await expect(quantity(page, '0-0')).toHaveText('200 g');
-    await expect(quantity(page, '1-1')).toHaveText('2 pieces');
+    await expect(input).toHaveValue('4');
+    await expect(quantity(page, '0-0')).toHaveText('400 g');
+    await expect(quantity(page, '0-4')).toHaveText('2 pieces');
 
     await page.getByRole('button', { name: 'More servings' }).click();
-    await expect(input).toHaveValue('3');
-    await expect(quantity(page, '0-0')).toHaveText('300 g');
-    await expect(quantity(page, '1-1')).toHaveText('3 pieces');
-    await expect(page.locator('#servings-note')).toHaveText('Scaled from 2 to 3 servings.');
+    await expect(input).toHaveValue('5');
+    await expect(quantity(page, '0-0')).toHaveText('500 g');
+    await expect(quantity(page, '0-4')).toHaveText('2.5 pieces');
+    await expect(page.locator('#servings-note')).toHaveText('Scaled from 4 to 5 servings.');
     await expect(page.locator('#servings-note')).toBeVisible();
-
-    await input.fill('1');
-    await input.press('Enter');
-    await expect(quantity(page, '0-0')).toHaveText('100 g');
-    await expect(quantity(page, '1-1')).toHaveText('1 piece');
-
-    await input.fill('4');
-    await input.press('Enter');
-    await expect(quantity(page, '0-0')).toHaveText('400 g');
-    await expect(page.locator('[data-servings-preset], #servings-reset')).toHaveCount(0);
-
-    await input.fill('3');
-    await input.press('Enter');
-    await expect(quantity(page, '0-0')).toHaveText('300 g');
-    await expect(quantity(page, '1-3')).toHaveText('150 ml');
-
-    await page.getByRole('button', { name: 'Fewer servings' }).click();
-    await page.getByRole('button', { name: 'Fewer servings' }).click();
-    await page.getByRole('button', { name: 'Fewer servings' }).click();
-    await expect(input).toHaveValue('0.5');
-    await expect(quantity(page, '0-0')).toHaveText('50 g');
-    await expect(quantity(page, '1-1')).toHaveText('0.5 pieces');
 
     await input.fill('2');
     await input.press('Enter');
     await expect(quantity(page, '0-0')).toHaveText('200 g');
+    await expect(quantity(page, '0-4')).toHaveText('1 piece');
+
+    await input.fill('8');
+    await input.press('Enter');
+    await expect(quantity(page, '0-0')).toHaveText('800 g');
+    await expect(page.locator('[data-servings-preset], #servings-reset')).toHaveCount(0);
+
+    await input.fill('6');
+    await input.press('Enter');
+    await expect(quantity(page, '0-0')).toHaveText('600 g');
+    await expect(quantity(page, '0-7')).toHaveText('112.5 ml');
+
+    await page.getByRole('button', { name: 'Fewer servings' }).click();
+    await page.getByRole('button', { name: 'Fewer servings' }).click();
+    await page.getByRole('button', { name: 'Fewer servings' }).click();
+    await expect(input).toHaveValue('3');
+    await expect(quantity(page, '0-0')).toHaveText('300 g');
+    await expect(quantity(page, '0-4')).toHaveText('1.5 pieces');
+
+    await input.fill('4');
+    await input.press('Enter');
+    await expect(quantity(page, '0-0')).toHaveText('400 g');
+    await expect(page.locator('#servings-note')).toBeHidden();
 
     await input.fill('0');
     await input.press('Enter');
-    await expect(input).toHaveValue('2');
+    await expect(input).toHaveValue('4');
   });
 
   test('shows two decimals without rounding countable ingredients', async ({ page }) => {
-    await page.goto('./recipes/banana-bread/');
+    await page.goto(SALAD);
     const input = page.getByLabel('Number of servings');
-    await input.fill('3');
+    await input.fill('6');
     await input.press('Enter');
-    await expect(quantity(page, '0-0')).toHaveText('0.9 pieces');
-    await expect(quantity(page, '0-3')).toHaveText('0.3 pieces');
-    await expect(quantity(page, '0-1')).toHaveText('34.5 g');
-    await input.fill('7');
+    await expect(quantity(page, '0-0')).toHaveText('3 pieces');
+    await expect(quantity(page, '0-5')).toHaveText('33.75 ml');
+    await expect(quantity(page, '0-6')).toHaveText('4.5 pieces');
+    await input.fill('2');
     await input.press('Enter');
-    await expect(quantity(page, '0-7')).toHaveText('133 g');
-    await expect(quantity(page, '0-5')).toHaveText('3.5 g');
+    await expect(quantity(page, '0-1')).toHaveText('2.5 g');
+    await expect(quantity(page, '0-5')).toHaveText('11.25 ml');
+    await expect(quantity(page, '0-6')).toHaveText('1.5 pieces');
   });
 
   test('keeps the servings selection while the tab is open', async ({ page }) => {
@@ -99,8 +102,8 @@ test.describe('Recipe sheet', () => {
     await page.getByRole('button', { name: 'More servings' }).click();
     await page.getByRole('button', { name: 'More servings' }).click();
     await page.reload();
-    await expect(page.getByLabel('Number of servings')).toHaveValue('4');
-    await expect(quantity(page, '0-0')).toHaveText('400 g');
+    await expect(page.getByLabel('Number of servings')).toHaveValue('6');
+    await expect(quantity(page, '0-0')).toHaveText('600 g');
   });
 
   test('shopping list follows scaling, ticks off items and shares the rest', async ({ page }) => {
@@ -111,18 +114,18 @@ test.describe('Recipe sheet', () => {
 
     const first = shopping.locator('[data-shopping-item="0-0"]');
     const firstLabel = shopping.locator('[data-shopping-label="0-0"]');
-    await expect(firstLabel).toHaveText('200 g Spaghetti');
-    await expect(shopping.locator('[data-shopping-label="1-6"]')).toHaveText('Black pepper (to taste)');
-    await expect(shopping.locator('[data-shopping-label="1-5"]')).toHaveText('Fresh basil (a small handful, optional)');
+    await expect(firstLabel).toHaveText('400 g Spaghetti');
+    await expect(shopping.locator('[data-shopping-label="0-10"]')).toHaveText('Sea salt and black pepper (to taste)');
+    await expect(shopping.locator('[data-shopping-label="0-8"]')).toContainText('Parmesan');
+    await expect(shopping.locator('[data-shopping-label="0-8"]')).toContainText('optional');
 
     await page.getByRole('button', { name: 'More servings' }).click();
-    await page.getByRole('button', { name: 'More servings' }).click();
-    await expect(firstLabel).toHaveText('400 g Spaghetti');
+    await expect(firstLabel).toHaveText('500 g Spaghetti');
 
     await first.check();
     await expect(first).toBeChecked();
     await expect(shopping.locator('.shopping__item--done')).toHaveCount(1);
-    await expect(page.locator('#shopping-status')).toHaveText('8 items still to buy.');
+    await expect(page.locator('#shopping-status')).toHaveText('10 items still to buy.');
 
     const link = page.locator('#shopping-whatsapp');
     await expect(link).toHaveAttribute('target', '_blank');
@@ -131,10 +134,9 @@ test.describe('Recipe sheet', () => {
     expect(href).toMatch(/^https:\/\/wa\.me\/\?text=/);
     const message = decodeURIComponent(href!.slice('https://wa.me/?text='.length));
     expect(message).toContain('🛒 BOATHOUSE NOODLES');
-    expect(message).toContain('Shopping List: Creamy Tomato Pasta');
-    expect(message).toContain('Servings: 4');
-    expect(message).toContain('SAUCE');
-    expect(message).toContain('☐ 600 g Cherry tomatoes');
+    expect(message).toContain('Shopping List: Pumpkin Pasta with Walnuts');
+    expect(message).toContain('Servings: 5');
+    expect(message).toContain('☐ 1250 g Hokkaido pumpkin');
     expect(message).not.toContain('Spaghetti');
 
     await page.reload();
@@ -143,7 +145,7 @@ test.describe('Recipe sheet', () => {
 
     await page.getByRole('button', { name: 'Reset ticks' }).click();
     await expect(first).not.toBeChecked();
-    await expect(page.locator('#shopping-status')).toHaveText('9 items still to buy.');
+    await expect(page.locator('#shopping-status')).toHaveText('11 items still to buy.');
   });
 
   test('copies the shopping list and the link to the clipboard', async ({ page, context, browserName }) => {
@@ -155,24 +157,24 @@ test.describe('Recipe sheet', () => {
     await page.getByRole('button', { name: 'Copy list' }).click();
     await expect(page.locator('#toast')).toHaveText('Shopping list copied');
     const list = await page.evaluate(() => navigator.clipboard.readText());
-    expect(list).toContain('☐ 200 g Spaghetti');
+    expect(list).toContain('☐ 400 g Spaghetti');
 
     await page.getByRole('button', { name: 'Copy link' }).click();
     await expect(page.locator('#toast')).toHaveText('Link copied');
-    expect(await page.evaluate(() => navigator.clipboard.readText())).toBe('https://noodlestall.github.io/noodlestall/recipes/creamy-tomato-pasta/');
+    expect(await page.evaluate(() => navigator.clipboard.readText())).toBe('https://noodlestall.github.io/noodlestall/recipes/pumpkin-pasta/');
   });
 
   test('offers a WhatsApp share link for the recipe itself', async ({ page }) => {
     await page.goto(PASTA);
     const href = await page.locator('#share-whatsapp').getAttribute('href');
     const message = decodeURIComponent(href!.slice('https://wa.me/?text='.length));
-    expect(message).toBe('Creamy Tomato Pasta – Boathouse Noodles\nhttps://noodlestall.github.io/noodlestall/recipes/creamy-tomato-pasta/');
+    expect(message).toBe('Pumpkin Pasta with Walnuts – Boathouse Noodles\nhttps://noodlestall.github.io/noodlestall/recipes/pumpkin-pasta/');
   });
 
   test('puts a compact servings stepper in the meta grid and hides the note until scaled', async ({ page }) => {
     await page.goto(PASTA);
     const cell = page.locator('.meta-grid .stepper');
-    await expect(cell.getByLabel('Number of servings')).toHaveValue('2');
+    await expect(cell.getByLabel('Number of servings')).toHaveValue('4');
     await expect(page.locator('#servings-heading, .section-head')).toHaveCount(0);
     await expect(page.locator('#servings-note')).toBeHidden();
     const box = await cell.boundingBox();
@@ -203,14 +205,14 @@ test.describe('Recipe sheet', () => {
     await expect(page.locator('#steps .step')).toHaveCount(5);
     await expect(page.locator('#steps input')).toHaveCount(0);
     await expect(page.locator('#steps-status, #steps-reset')).toHaveCount(0);
-    await expect(page.locator('.step__title').first()).toContainText('Cook the pasta');
+    await expect(page.locator('.step__title').first()).toContainText('Roast the pumpkin');
   });
 
   test('is operable from the keyboard', async ({ page }) => {
     await page.goto(PASTA);
     await page.getByRole('button', { name: 'More servings' }).focus();
     await page.keyboard.press('Enter');
-    await expect(quantity(page, '0-0')).toHaveText('300 g');
+    await expect(quantity(page, '0-0')).toHaveText('500 g');
 
     await page.locator('#shopping summary').focus();
     await page.keyboard.press('Enter');

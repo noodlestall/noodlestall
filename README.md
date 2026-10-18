@@ -47,10 +47,9 @@ Each recipe is a folder under `src/content/recipes/` containing `recipe.md` (YAM
 
 ```
 src/content/recipes/
-  creamy-tomato-pasta/
+  pumpkin-pasta/
     recipe.md
     cover.webp
-    step-01.webp
 ```
 
 - Format reference: [`docs/RECIPE_FORMAT.md`](docs/RECIPE_FORMAT.md)
@@ -59,10 +58,6 @@ src/content/recipes/
 - Copy-and-paste prompt for an AI agent: [`docs/CODEX_ADD_RECIPE_PROMPT.md`](docs/CODEX_ADD_RECIPE_PROMPT.md)
 
 Adding or deleting a folder and pushing to `main` is enough; the site rebuilds itself.
-
-## Sample content
-
-The six sample recipes ship with **placeholder illustrations** instead of photographs. Each `cover.svg` is labelled as such. Replace them with your own photos (`cover.webp` or `cover.jpg`) and update `coverImage` in the recipe file.
 
 ## Deployment
 

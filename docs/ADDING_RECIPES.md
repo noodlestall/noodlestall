@@ -66,6 +66,7 @@ Things the agent will not do on its own, by design:
 | --- | --- | --- |
 | `npm run validate` | you run it, and on every push | invalid fields, bad units, missing images, duplicate titles |
 | `npm run build` | on every push | anything the validator missed, broken image references |
-| `npm test` and `npm run test:e2e` | on every push | the site's own features; recipes do not affect them unless a sample recipe changed |
+| `npm test` | you run it (part of `npm run verify`) | the scaling, search and sharing logic |
+| `npm run test:e2e` | on every push | the site's own features; the tests use the pumpkin pasta and smashed cucumber salad recipes, so edit those two with care |
 
 If a push fails, open the **Actions** tab on GitHub, click the failed run and read the first red line. It names the recipe and the field.

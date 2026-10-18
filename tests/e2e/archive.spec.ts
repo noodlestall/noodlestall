@@ -78,10 +78,10 @@ test.describe('Recipe index', () => {
     await expect(page).toHaveURL(/\?q=tomato$/);
     await expect(page.locator('#results-status')).toHaveText(new RegExp(`^${tomato.length} recipes? match$`));
 
-    const noodles = titlesMatching(data, 'egg noodles');
-    expect(noodles.length).toBeGreaterThan(0);
-    await search.fill('egg noodles');
-    await expect.poll(() => visibleTitles(page)).toEqual(noodles);
+    const cucumber = titlesMatching(data, 'cucumber salad');
+    expect(cucumber.length).toBeGreaterThan(0);
+    await search.fill('cucumber salad');
+    await expect.poll(() => visibleTitles(page)).toEqual(cucumber);
 
     await search.fill('zzzz');
     await expect(page.locator('#empty-state')).toBeVisible();
@@ -96,14 +96,15 @@ test.describe('Recipe index', () => {
     await page.goto('./');
     const data = await indexData(page);
 
-    const soups = titlesMatching(data, '', 'soups');
-    expect(soups.length).toBeGreaterThan(0);
-    await page.locator('[data-category="soups"]').click();
-    await expect.poll(() => visibleTitles(page)).toEqual(soups);
-    await expect(page.locator('[data-category="soups"]')).toHaveAttribute('aria-current', 'true');
-    await expect(page).toHaveURL(/category=soups/);
+    const salads = titlesMatching(data, '', 'salads');
+    expect(salads.length).toBeGreaterThan(0);
+    expect(salads.length).toBeLessThan(data.length);
+    await page.locator('[data-category="salads"]').click();
+    await expect.poll(() => visibleTitles(page)).toEqual(salads);
+    await expect(page.locator('[data-category="salads"]')).toHaveAttribute('aria-current', 'true');
+    await expect(page).toHaveURL(/category=salads/);
 
-    await page.locator('[data-category="soups"]').click();
+    await page.locator('[data-category="salads"]').click();
     await expect.poll(() => visibleTitles(page)).toHaveLength(data.length);
     await expect(page.locator('[data-category=""]')).toHaveAttribute('aria-current', 'true');
 
@@ -153,14 +154,14 @@ test.describe('Recipe index', () => {
   });
 
   test('restores filters from a shared URL and ignores legacy parameters', async ({ page }) => {
-    await page.goto('./?category=desserts&sort=desc&q=chocolate&letter=C');
+    await page.goto('./?category=salads&sort=desc&q=cucumber&letter=C');
     const data = await indexData(page);
-    const expected = titlesMatching(data, 'chocolate', 'desserts');
+    const expected = titlesMatching(data, 'cucumber', 'salads');
     expect(expected.length).toBeGreaterThan(0);
     await expect.poll(() => visibleTitles(page)).toEqual(expected);
-    await expect(page.getByLabel('Search recipes, ingredients and tags')).toHaveValue('chocolate');
-    await expect(page.locator('[data-category="desserts"]')).toHaveAttribute('aria-current', 'true');
-    await expect(page).toHaveURL(/\?q=chocolate&category=desserts$/);
+    await expect(page.getByLabel('Search recipes, ingredients and tags')).toHaveValue('cucumber');
+    await expect(page.locator('[data-category="salads"]')).toHaveAttribute('aria-current', 'true');
+    await expect(page).toHaveURL(/\?q=cucumber&category=salads$/);
   });
 
   test('is keyboard accessible from the skip link to the first recipe', async ({ page }) => {
@@ -172,14 +173,14 @@ test.describe('Recipe index', () => {
     await expect(page.locator('#main')).toBeFocused();
 
     await page.getByLabel('Search recipes, ingredients and tags').focus();
-    await page.keyboard.type('banana');
-    await expect.poll(() => visibleTitles(page)).toEqual(titlesMatching(data, 'banana'));
+    await page.keyboard.type('pumpkin');
+    await expect.poll(() => visibleTitles(page)).toEqual(titlesMatching(data, 'pumpkin'));
 
-    await page.locator('[data-category="baking"]').focus();
+    await page.locator('[data-category="dinner"]').focus();
     await page.keyboard.press('Enter');
-    await expect(page.locator('[data-category="baking"]')).toHaveAttribute('aria-current', 'true');
+    await expect(page.locator('[data-category="dinner"]')).toHaveAttribute('aria-current', 'true');
 
-    const firstId = data.find((entry) => entry.category === 'baking' && entry.searchText.includes('banana'))?.id;
+    const firstId = data.find((entry) => entry.category === 'dinner' && entry.searchText.includes('pumpkin'))?.id;
     expect(firstId).toBeTruthy();
     const firstLink = page.locator('#recipe-index .entry:not([hidden]) .entry__title a').first();
     await firstLink.focus();
