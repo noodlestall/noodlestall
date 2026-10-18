@@ -19,7 +19,7 @@ Nothing is stored beyond the browser session: no accounts, no favourites, no clo
 
 ## Quick start
 
-Requirements: Node.js 22.12 or newer (see `.nvmrc`) and npm.
+Requirements: Node.js 22.22 or newer (see `.nvmrc`) and npm.
 
 ```bash
 npm ci

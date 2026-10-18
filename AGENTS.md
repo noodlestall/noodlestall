@@ -35,7 +35,7 @@ There is no backend, database, login, editor, favourites, meal planning, nutriti
 ## Commands
 
 ```bash
-npm ci                 # install exact dependencies (Node 22.12 or newer, see .nvmrc)
+npm ci                 # install exact dependencies (Node 22.22 or newer, see .nvmrc)
 npm run dev            # local dev server at http://localhost:4321/noodlestall/
 npm run validate       # validate every recipe folder (fast, no build)
 npm run check          # TypeScript and Astro diagnostics
