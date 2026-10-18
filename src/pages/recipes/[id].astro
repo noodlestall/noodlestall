@@ -42,6 +42,7 @@ const origin = Astro.site?.origin ?? SITE.url;
 const path = recipePath(base, entry.id);
 const url = absoluteUrl(origin, path);
 const total = totalMinutes(data);
+const servingsNoun = data.servings === 1 ? 'serving' : 'servings';
 const cuisine = cuisineLabel(data);
 
 let ogImage: string | undefined;
@@ -119,13 +120,6 @@ const shareUrl = buildWhatsAppUrl(buildRecipeShareMessage(data.title, url));
       </p>
       <h1>{data.title}</h1>
       <p class="lead">{data.description}</p>
-      <div class="sheet__actions">
-        <button type="button" class="btn btn--small" id="print-recipe">Print</button>
-        <button type="button" class="btn btn--small" id="copy-link" data-url={url}>Copy link</button>
-        <a class="btn btn--small" id="share-whatsapp" href={shareUrl} target="_blank" rel="noopener noreferrer">
-          Share via WhatsApp
-        </a>
-      </div>
     </header>
 
     <figure class="sheet__cover">
@@ -144,34 +138,14 @@ const shareUrl = buildWhatsAppUrl(buildRecipeShareMessage(data.title, url));
       <div><dt>Prep</dt><dd>{formatMinutes(data.prepTimeMinutes)}</dd></div>
       <div><dt>Cook</dt><dd>{formatMinutes(data.cookTimeMinutes)}</dd></div>
       <div><dt>Total</dt><dd>{formatMinutes(total)}</dd></div>
-      <div>
-        <dt>Servings</dt>
-        <dd>
-          <span class="stepper" role="group" aria-label="Servings">
-            <button type="button" class="stepper__btn" data-servings-step="-1" aria-label="Fewer servings">−</button>
-            <label class="visually-hidden" for="servings-input">Number of servings</label>
-            <input
-              class="stepper__input"
-              id="servings-input"
-              type="number"
-              inputmode="decimal"
-              min="0.5"
-              max="999"
-              step="any"
-              value={formatQuantity(data.servings)}
-              data-original={data.servings}
-            />
-            <button type="button" class="stepper__btn" data-servings-step="1" aria-label="More servings">+</button>
-          </span>
-        </dd>
-      </div>
+      <div><dt>Servings</dt><dd>{formatQuantity(data.servings)} {servingsNoun}</dd></div>
       <div><dt>Difficulty</dt><dd>{difficultyLabel(data)}</dd></div>
       {cuisine && <div><dt>Cuisine</dt><dd>{cuisine}</dd></div>}
     </dl>
 
     <div class="sheet__columns">
       <aside class="sheet__aside">
-        <IngredientList groups={data.ingredientGroups} />
+        <IngredientList groups={data.ingredientGroups} servings={data.servings} />
         <ShoppingList recipe={clientRecipe} />
       </aside>
 
@@ -202,6 +176,13 @@ const shareUrl = buildWhatsAppUrl(buildRecipeShareMessage(data.title, url));
       </div>
     </div>
 
+    <footer class="sheet__actions" aria-label="Recipe actions">
+      <button type="button" class="btn btn--small" id="print-recipe">Print</button>
+      <button type="button" class="btn btn--small" id="copy-link" data-url={url}>Copy link</button>
+      <a class="btn btn--small" id="share-whatsapp" href={shareUrl} target="_blank" rel="noopener noreferrer">
+        Share via WhatsApp
+      </a>
+    </footer>
   </article>
 
   <script type="application/json" id="recipe-data" set:html={safeJson(clientRecipe)} />

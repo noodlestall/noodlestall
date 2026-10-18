@@ -16,7 +16,7 @@ test.describe('Recipe sheet', () => {
     await expect(page.locator('.meta-grid dt')).toHaveText(['Prep', 'Cook', 'Total', 'Servings', 'Difficulty', 'Cuisine']);
     await expect(page.locator('.meta-grid dd').nth(0)).toHaveText('15 min');
     await expect(page.locator('.meta-grid dd').nth(2)).toHaveText('35 min');
-    await expect(page.locator('.meta-grid dd').nth(3).getByLabel('Number of servings')).toHaveValue('4');
+    await expect(page.locator('.meta-grid dd').nth(3)).toHaveText('4 servings');
     await expect(page.locator('.meta-grid dd').nth(4)).toHaveText('Easy');
     await expect(page.locator('.meta-grid dd').nth(5)).toHaveText('Italian');
     await expect(page.locator('.ingredient')).toHaveCount(11);
@@ -171,14 +171,17 @@ test.describe('Recipe sheet', () => {
     expect(message).toBe('Pumpkin Pasta with Walnuts – Boathouse Noodles\nhttps://noodlestall.github.io/noodlestall/recipes/pumpkin-pasta/');
   });
 
-  test('puts a compact servings stepper in the meta grid and hides the note until scaled', async ({ page }) => {
+  test('puts the servings stepper in a closing row under the ingredients and hides the note until scaled', async ({ page }) => {
     await page.goto(PASTA);
-    const cell = page.locator('.meta-grid .stepper');
-    await expect(cell.getByLabel('Number of servings')).toHaveValue('4');
-    await expect(page.locator('#servings-heading, .section-head')).toHaveCount(0);
+    const row = page.locator('.servings-row');
+    await expect(row.getByLabel('Number of servings')).toHaveValue('4');
+    await expect(row).toContainText('Adjust servings');
+    await expect(page.locator('.meta-grid input, #servings-heading, .section-head')).toHaveCount(0);
     await expect(page.locator('#servings-note')).toBeHidden();
-    const box = await cell.boundingBox();
-    expect(box!.height).toBeLessThanOrEqual(36);
+    const lastIngredient = await page.locator('.ingredient').last().boundingBox();
+    const box = await row.boundingBox();
+    expect(box!.y).toBeGreaterThan(lastIngredient!.y + lastIngredient!.height - 1);
+    expect(box!.height).toBeLessThanOrEqual(44);
     for (const name of ['Fewer servings', 'More servings']) {
       const b = await page.getByRole('button', { name }).boundingBox();
       expect(b!.width).toBeGreaterThanOrEqual(24);
@@ -236,6 +239,11 @@ test.describe('Recipe sheet', () => {
 
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth);
     expect(overflow).toBe(false);
+
+    // Print, copy and share live at the end of the sheet, after the method.
+    const actions = await page.locator('.sheet__actions').boundingBox();
+    expect(actions!.y).toBeGreaterThan(steps!.y + steps!.height - 1);
+    await expect(page.locator('.sheet__head .btn')).toHaveCount(0);
 
     const boxes = await page.locator('.btn, .stepper__btn, .stepper__input, .shopping input[type="checkbox"]').evaluateAll((els) => els.map((el) => el.getBoundingClientRect().height));
     for (const height of boxes) expect(height).toBeGreaterThanOrEqual(24);
