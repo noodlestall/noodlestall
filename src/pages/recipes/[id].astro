@@ -101,7 +101,6 @@ const jsonLd = {
 };
 
 const shareUrl = buildWhatsAppUrl(buildRecipeShareMessage(data.title, url));
-const servingsNoun = data.servings === 1 ? 'serving' : 'servings';
 ---
 
 <BaseLayout
@@ -145,14 +144,34 @@ const servingsNoun = data.servings === 1 ? 'serving' : 'servings';
       <div><dt>Prep</dt><dd>{formatMinutes(data.prepTimeMinutes)}</dd></div>
       <div><dt>Cook</dt><dd>{formatMinutes(data.cookTimeMinutes)}</dd></div>
       <div><dt>Total</dt><dd>{formatMinutes(total)}</dd></div>
-      <div><dt>Servings</dt><dd>{formatQuantity(data.servings)} {servingsNoun}</dd></div>
+      <div>
+        <dt>Servings</dt>
+        <dd>
+          <span class="stepper" role="group" aria-label="Servings">
+            <button type="button" class="stepper__btn" data-servings-step="-1" aria-label="Fewer servings">−</button>
+            <label class="visually-hidden" for="servings-input">Number of servings</label>
+            <input
+              class="stepper__input"
+              id="servings-input"
+              type="number"
+              inputmode="decimal"
+              min="0.5"
+              max="999"
+              step="any"
+              value={formatQuantity(data.servings)}
+              data-original={data.servings}
+            />
+            <button type="button" class="stepper__btn" data-servings-step="1" aria-label="More servings">+</button>
+          </span>
+        </dd>
+      </div>
       <div><dt>Difficulty</dt><dd>{difficultyLabel(data)}</dd></div>
       {cuisine && <div><dt>Cuisine</dt><dd>{cuisine}</dd></div>}
     </dl>
 
     <div class="sheet__columns">
       <aside class="sheet__aside">
-        <IngredientList groups={data.ingredientGroups} servings={data.servings} />
+        <IngredientList groups={data.ingredientGroups} />
         <ShoppingList recipe={clientRecipe} />
       </aside>
 

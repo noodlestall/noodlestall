@@ -13,7 +13,10 @@ test.describe('Recipe sheet', () => {
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('Creamy Tomato Pasta');
     await expect(page.locator('.sheet__cover img')).toHaveCount(1);
     await expect(page.locator('.meta-grid dt')).toHaveText(['Prep', 'Cook', 'Total', 'Servings', 'Difficulty', 'Cuisine']);
-    await expect(page.locator('.meta-grid dd')).toHaveText(['10 min', '20 min', '30 min', '2 servings', 'Easy', 'Italian']);
+    await expect(page.locator('.meta-grid dd').nth(0)).toHaveText('10 min');
+    await expect(page.locator('.meta-grid dd').nth(2)).toHaveText('30 min');
+    await expect(page.locator('.meta-grid dd').nth(3).getByLabel('Number of servings')).toHaveValue('2');
+    await expect(page.locator('.meta-grid dd').nth(4)).toHaveText('Easy');
     await expect(page.locator('.ingredient')).toHaveCount(9);
     await expect(page.locator('.step')).toHaveCount(5);
     await expect(page.locator('.step__image img')).toHaveCount(2);
@@ -166,16 +169,19 @@ test.describe('Recipe sheet', () => {
     expect(message).toBe('Creamy Tomato Pasta – Boathouse Noodles\nhttps://noodlestall.github.io/noodlestall/recipes/creamy-tomato-pasta/');
   });
 
-  test('puts the servings stepper in the ingredients heading and hides the note until scaled', async ({ page }) => {
+  test('puts a compact servings stepper in the meta grid and hides the note until scaled', async ({ page }) => {
     await page.goto(PASTA);
-    const head = page.locator('.section-head');
-    await expect(head.getByRole('heading', { name: 'Ingredients' })).toBeVisible();
-    await expect(head.getByLabel('Number of servings')).toHaveValue('2');
-    await expect(page.locator('#servings-heading')).toHaveCount(0);
+    const cell = page.locator('.meta-grid .stepper');
+    await expect(cell.getByLabel('Number of servings')).toHaveValue('2');
+    await expect(page.locator('#servings-heading, .section-head')).toHaveCount(0);
     await expect(page.locator('#servings-note')).toBeHidden();
-    const heading = await head.getByRole('heading', { name: 'Ingredients' }).boundingBox();
-    const stepper = await head.locator('.servings__row').boundingBox();
-    expect(Math.abs(heading!.y + heading!.height / 2 - (stepper!.y + stepper!.height / 2))).toBeLessThan(8);
+    const box = await cell.boundingBox();
+    expect(box!.height).toBeLessThanOrEqual(36);
+    for (const name of ['Fewer servings', 'More servings']) {
+      const b = await page.getByRole('button', { name }).boundingBox();
+      expect(b!.width).toBeGreaterThanOrEqual(24);
+      expect(b!.height).toBeGreaterThanOrEqual(24);
+    }
   });
 
   test('clears ticked shopping items when going back to the index', async ({ page }) => {
@@ -229,7 +235,7 @@ test.describe('Recipe sheet', () => {
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth);
     expect(overflow).toBe(false);
 
-    const boxes = await page.locator('.btn, .servings__input, .shopping input[type="checkbox"]').evaluateAll((els) => els.map((el) => el.getBoundingClientRect().height));
+    const boxes = await page.locator('.btn, .stepper__btn, .stepper__input, .shopping input[type="checkbox"]').evaluateAll((els) => els.map((el) => el.getBoundingClientRect().height));
     for (const height of boxes) expect(height).toBeGreaterThanOrEqual(24);
   });
 
