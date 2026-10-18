@@ -512,12 +512,51 @@ input[type='checkbox']:checked::before {
   gap: var(--space-2);
 }
 
-.chip-row__label {
-  flex-basis: 100%;
+.categories__summary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 2.25rem;
+  cursor: pointer;
+  list-style: none;
   font-size: var(--text-xs);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--ink-soft);
+}
+
+.categories__summary::-webkit-details-marker {
+  display: none;
+}
+
+.categories__summary::before {
+  content: '+';
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: var(--rule-width) solid var(--rule-strong);
+  border-radius: var(--radius);
+  color: var(--ink);
+  font-size: var(--text-sm);
+  line-height: 1;
+}
+
+.categories[open] .categories__summary::before {
+  content: '−';
+}
+
+.categories__summary:hover {
+  color: var(--ink);
+}
+
+.categories__current {
+  color: var(--ink);
+}
+
+.categories .chip-row {
+  margin-top: var(--space-3);
 }
 
 .results-bar {

@@ -10,17 +10,22 @@ const base = import.meta.env.BASE_URL;
     <input type="search" id="q" name="q" placeholder="e.g. tomato, vegan, soup" autocomplete="off" spellcheck="false" />
   </div>
 
-  <nav class="chip-row" id="categories" aria-label="Categories">
-    <span class="chip-row__label" id="categories-label">Categories</span>
-    <a class="chip" href={base} data-category="" aria-current="true">All</a>
-    {
-      CATEGORIES.map((category) => (
-        <a class="chip" href={`${base}?category=${category}`} data-category={category}>
-          {CATEGORY_LABELS[category]}
-        </a>
-      ))
-    }
-  </nav>
+  <details class="categories" id="categories">
+    <summary class="categories__summary">
+      <span>Categories</span>
+      <span class="categories__current" id="categories-current" aria-live="polite"></span>
+    </summary>
+    <nav class="chip-row" aria-label="Categories">
+      <a class="chip" href={base} data-category="" aria-current="true">All</a>
+      {
+        CATEGORIES.map((category) => (
+          <a class="chip" href={`${base}?category=${category}`} data-category={category}>
+            {CATEGORY_LABELS[category]}
+          </a>
+        ))
+      }
+    </nav>
+  </details>
 
   <noscript>
     <p class="eyebrow">Filtering needs JavaScript. All recipes are listed below.</p>

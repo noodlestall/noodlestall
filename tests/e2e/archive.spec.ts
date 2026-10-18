@@ -99,7 +99,14 @@ test.describe('Recipe index', () => {
     const salads = titlesMatching(data, '', 'salads');
     expect(salads.length).toBeGreaterThan(0);
     expect(salads.length).toBeLessThan(data.length);
+
+    const menu = page.locator('#categories');
+    await expect(menu).not.toHaveAttribute('open', '');
+    await expect(page.locator('[data-category="salads"]')).toBeHidden();
+    await menu.locator('summary').click();
+    await expect(menu).toHaveAttribute('open', '');
     await page.locator('[data-category="salads"]').click();
+    await expect(page.locator('#categories-current')).toHaveText('· Salads');
     await expect.poll(() => visibleTitles(page)).toEqual(salads);
     await expect(page.locator('[data-category="salads"]')).toHaveAttribute('aria-current', 'true');
     await expect(page).toHaveURL(/category=salads/);
@@ -107,6 +114,7 @@ test.describe('Recipe index', () => {
     await page.locator('[data-category="salads"]').click();
     await expect.poll(() => visibleTitles(page)).toHaveLength(data.length);
     await expect(page.locator('[data-category=""]')).toHaveAttribute('aria-current', 'true');
+    await expect(page.locator('#categories-current')).toHaveText('');
 
     await page.locator('[data-category="dinner"]').click();
     await page.getByLabel('Search recipes, ingredients and tags').fill('tomato');
@@ -161,6 +169,7 @@ test.describe('Recipe index', () => {
     await expect.poll(() => visibleTitles(page)).toEqual(expected);
     await expect(page.getByLabel('Search recipes, ingredients and tags')).toHaveValue('cucumber');
     await expect(page.locator('[data-category="salads"]')).toHaveAttribute('aria-current', 'true');
+    await expect(page.locator('#categories-current')).toHaveText('· Salads');
     await expect(page).toHaveURL(/\?q=cucumber&category=salads$/);
   });
 
@@ -176,6 +185,9 @@ test.describe('Recipe index', () => {
     await page.keyboard.type('pumpkin');
     await expect.poll(() => visibleTitles(page)).toEqual(titlesMatching(data, 'pumpkin'));
 
+    await page.locator('#categories summary').focus();
+    await page.keyboard.press('Enter');
+    await expect(page.locator('#categories')).toHaveAttribute('open', '');
     await page.locator('[data-category="dinner"]').focus();
     await page.keyboard.press('Enter');
     await expect(page.locator('[data-category="dinner"]')).toHaveAttribute('aria-current', 'true');

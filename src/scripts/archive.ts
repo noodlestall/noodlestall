@@ -1,9 +1,9 @@
 /**
  * Client-side search and category filtering for the recipe index.
  * Entries are pre-rendered A–Z; this script only hides and shows them.
- * Coming home also clears every ticked shopping list.
+ * Coming home also resets every recipe's servings and shopping ticks.
  */
-import { SHOPPING_PREFIX, clearSessionPrefix } from '../lib/storage';
+import { STATE_PREFIX, clearSessionPrefix } from '../lib/storage';
 import {
   applyFilters,
   hasActiveFilters,
@@ -17,7 +17,7 @@ function $<T extends HTMLElement>(selector: string): T | null {
   return document.querySelector<T>(selector);
 }
 
-clearSessionPrefix(SHOPPING_PREFIX);
+clearSessionPrefix(STATE_PREFIX);
 
 const dataNode = document.getElementById('recipe-index-data');
 const list = document.getElementById('recipe-index');
@@ -32,6 +32,7 @@ if (dataNode && list && form) {
 
   const input = $<HTMLInputElement>('#q')!;
   const categoryChips = [...form.querySelectorAll<HTMLAnchorElement>('[data-category]')];
+  const categoriesCurrent = $<HTMLElement>('#categories-current');
   const status = $<HTMLElement>('#results-status')!;
   const empty = $<HTMLElement>('#empty-state')!;
 
@@ -43,6 +44,10 @@ if (dataNode && list && form) {
       const active = (chip.dataset.category ?? '') === state.category;
       if (active) chip.setAttribute('aria-current', 'true');
       else chip.removeAttribute('aria-current');
+    }
+    if (categoriesCurrent) {
+      const activeChip = categoryChips.find((chip) => (chip.dataset.category ?? '') === state.category);
+      categoriesCurrent.textContent = state.category && activeChip ? `· ${activeChip.textContent?.trim()}` : '';
     }
   }
 

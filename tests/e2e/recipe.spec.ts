@@ -189,18 +189,22 @@ test.describe('Recipe sheet', () => {
     }
   });
 
-  test('clears ticked shopping items when going back to the index', async ({ page }) => {
+  test('clears ticked shopping items and the serving scale when going back to the index', async ({ page }) => {
     await page.goto(PASTA);
+    await page.getByRole('button', { name: 'More servings' }).click();
     await page.locator('#shopping summary').click();
     const first = page.locator('[data-shopping-item="0-0"]');
     await first.check();
     await page.reload();
     await expect(page.locator('[data-shopping-item="0-0"]')).toBeChecked();
+    await expect(page.getByLabel('Number of servings')).toHaveValue('5');
 
     await page.getByRole('link', { name: 'Boathouse Noodles – home' }).click();
     await expect(page).toHaveURL(/\/noodlestall\/$/);
     await page.goto(PASTA);
     await expect(page.locator('[data-shopping-item="0-0"]')).not.toBeChecked();
+    await expect(page.getByLabel('Number of servings')).toHaveValue('4');
+    await expect(quantity(page, '0-0')).toHaveText('400 g');
   });
 
   test('shows the method as plain numbered steps without checkboxes', async ({ page }) => {

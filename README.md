@@ -7,10 +7,10 @@ A personal recipe archive for family and friends, designed to look like a carefu
 ## What it does
 
 - **Recipe index** with a photograph, archive number, title, category, total time and difficulty for every recipe. Two columns on desktop, one on phones.
-- **Instant search** across names, ingredients and tags, category filters and shareable URLs such as `/?category=soups&q=chicken`.
+- **Instant search** across names, ingredients and tags, a fold-out Categories menu (closed by default) and shareable URLs such as `/?category=soups&q=chicken`.
 - **Recipe sheets** with a large photograph, times, servings, grouped ingredients, numbered steps with optional step photos, notes and source attribution.
 - **Ingredient scaling** from the original servings with + / − or direct entry. Metric only, two decimal places, nothing is rounded away.
-- **Shopping list** per recipe using the scaled quantities: tick items off, copy the rest or send them via WhatsApp. Ticks are cleared when you return to the index.
+- **Shopping list** per recipe using the scaled quantities: tick items off, copy the rest or send them via WhatsApp. Ticks and the chosen serving count are reset when you return to the index.
 - **Print**, **copy link** and **share via WhatsApp** on every recipe.
 - **One bright paper theme**: ivory background, charcoal type, no dark mode or theme switch.
 - Semantic HTML, keyboard support, visible focus, reduced-motion support, Open Graph tags, sitemap, robots.txt and schema.org Recipe data.

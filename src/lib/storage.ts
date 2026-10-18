@@ -8,8 +8,8 @@ export const storageKeys = {
   shopping: (id: string) => `bn:shopping:${id}`
 };
 
-/** Prefix shared by every shopping list key. */
-export const SHOPPING_PREFIX = 'bn:shopping:';
+/** Prefix shared by every per-recipe key (servings and shopping lists). */
+export const STATE_PREFIX = 'bn:';
 
 function getSession(): Storage | null {
   try {
@@ -41,7 +41,7 @@ export function writeSession(key: string, value: unknown): void {
   }
 }
 
-/** Removes every key with the given prefix, e.g. all shopping lists when returning to the index. */
+/** Removes every key with the given prefix, e.g. all recipe state when returning to the index. */
 export function clearSessionPrefix(prefix: string): void {
   const store = getSession();
   if (!store) return;

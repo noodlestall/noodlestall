@@ -7,9 +7,9 @@ Instructions for AI coding agents (Codex, Claude Code, Copilot, Cursor and simil
 Boathouse Noodles is a personal recipe archive for family and friends, published for free on GitHub Pages at `https://noodlestall.github.io/noodlestall/`. It is a static Astro site with a deliberately small feature set:
 
 - Homepage index of every recipe with a photograph, number, title, category, time and difficulty.
-- Instant client-side search (names, ingredients, tags) and category filters.
+- Instant client-side search (names, ingredients, tags) and a fold-out Categories menu, closed by default.
 - Recipe sheets with ingredient scaling, printing, link copying and WhatsApp sharing.
-- A per-recipe shopping list with scaled quantities that can be ticked off, copied or shared. Ticks reset when the index page loads.
+- A per-recipe shopping list with scaled quantities that can be ticked off, copied or shared. Ticks and the chosen serving count reset when the index page loads.
 - The wordmark in the header is the only navigation; it always leads back to the index. There are no other header links.
 
 There is no backend, database, login, editor, favourites, meal planning, nutrition data or imperial conversion. Do not add any of these.
