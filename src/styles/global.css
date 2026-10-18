@@ -1,6 +1,6 @@
 /* ------------------------------------------------------------------
    Boathouse Noodles – design tokens and shared styles
-   A typewritten recipe archive: ivory paper, charcoal ink, thin rules.
+   A typewritten recipe archive in ink mode: dark paper, pale ink, thin rules.
    ------------------------------------------------------------------ */
 
 @font-face {
@@ -71,19 +71,19 @@
 /* ---- Tokens ---------------------------------------------------- */
 
 :root {
-  color-scheme: light;
+  color-scheme: dark;
 
   --font-type: 'American Typewriter', 'Courier Prime', 'Courier New', Georgia, serif;
 
-  --paper: #f4eee2;
-  --paper-deep: #ebe3d3;
-  --ink: #2b2a27;
-  --ink-soft: #625e57;
-  --ink-faint: #6e6960;
-  --rule: #d3cab8;
-  --rule-strong: #a9a08e;
-  --ribbon: #a63d31;
-  --focus: #1f5f8b;
+  --paper: #221f1b;
+  --paper-deep: #2b2824;
+  --ink: #efe8d8;
+  --ink-soft: #bcb3a3;
+  --ink-faint: #9a9285;
+  --rule: #3d3932;
+  --rule-strong: #5c564c;
+  --ribbon: #d2695c;
+  --focus: #8ec3ea;
 
   --measure: 68ch;
   --container: 76rem;
@@ -107,34 +107,6 @@
   --text-lg: 1.25rem;
   --text-xl: 1.6rem;
   --text-2xl: clamp(2rem, 4.5vw, 2.9rem);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='paper']) {
-    color-scheme: dark;
-    --paper: #221f1b;
-    --paper-deep: #2b2824;
-    --ink: #efe8d8;
-    --ink-soft: #bcb3a3;
-    --ink-faint: #9a9285;
-    --rule: #3d3932;
-    --rule-strong: #5c564c;
-    --ribbon: #d2695c;
-    --focus: #8ec3ea;
-  }
-}
-
-:root[data-theme='ink'] {
-  color-scheme: dark;
-  --paper: #221f1b;
-  --paper-deep: #2b2824;
-  --ink: #efe8d8;
-  --ink-soft: #bcb3a3;
-  --ink-faint: #9a9285;
-  --rule: #3d3932;
-  --rule-strong: #5c564c;
-  --ribbon: #d2695c;
-  --focus: #8ec3ea;
 }
 
 /* ---- Base ------------------------------------------------------ */
@@ -214,8 +186,7 @@ ol {
 }
 
 button,
-input,
-select {
+input {
   font: inherit;
   color: inherit;
 }
@@ -307,7 +278,6 @@ select {
 
 .btn,
 .chip,
-.field select,
 .field input {
   font-family: var(--font-type);
   font-size: var(--text-sm);
@@ -400,18 +370,6 @@ select {
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--ink-soft);
-}
-
-.field select {
-  appearance: none;
-  -webkit-appearance: none;
-  padding-right: 2.25rem;
-  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
-    linear-gradient(135deg, currentColor 50%, transparent 50%);
-  background-position: calc(100% - 1.1rem) 50%, calc(100% - 0.75rem) 50%;
-  background-size: 0.35rem 0.35rem;
-  background-repeat: no-repeat;
-  cursor: pointer;
 }
 
 .field input[type='search'] {
@@ -528,12 +486,6 @@ input[type='checkbox']:checked::before {
   border-bottom-color: var(--ink);
 }
 
-.theme-toggle {
-  min-height: 2.25rem;
-  font-size: var(--text-xs);
-  letter-spacing: 0.16em;
-}
-
 /* ---- Footer ---------------------------------------------------- */
 
 .site-footer {
@@ -575,7 +527,14 @@ input[type='checkbox']:checked::before {
 }
 
 .controls__search {
+  display: flex;
+  align-items: end;
+  gap: var(--space-3);
   max-width: 40rem;
+}
+
+.controls__search .field {
+  flex: 1 1 auto;
 }
 
 .chip-row {
@@ -590,44 +549,6 @@ input[type='checkbox']:checked::before {
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--ink-soft);
-}
-
-.controls__filters {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
-  gap: var(--space-3) var(--space-4);
-  align-items: end;
-}
-
-.letter-index {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-1);
-}
-
-.letter-index button {
-  min-width: 2.25rem;
-  min-height: 2.25rem;
-  padding: 0;
-  border: var(--rule-width) solid transparent;
-  border-radius: var(--radius);
-  background: transparent;
-  font-size: var(--text-sm);
-  cursor: pointer;
-}
-
-.letter-index button:hover:not(:disabled) {
-  border-color: var(--ink);
-}
-
-.letter-index button[aria-pressed='true'] {
-  background: var(--ink);
-  color: var(--paper);
-}
-
-.letter-index button:disabled {
-  color: var(--ink-faint);
-  cursor: default;
 }
 
 .results-bar {
@@ -1237,7 +1158,6 @@ input[type='checkbox']:checked::before {
   }
 
   .site-nav,
-  .theme-toggle,
   .sheet__actions,
   .servings__row,
   .servings__presets,

@@ -1,11 +1,10 @@
 /**
- * Client-side search, filtering and sorting for the recipe index.
- * Entries are pre-rendered; this script only hides, shows and reorders them.
+ * Client-side search and category filtering for the recipe index.
+ * Entries are pre-rendered A–Z; this script only hides and shows them.
  */
 import {
   EMPTY_FILTERS,
   applyFilters,
-  availableLetters,
   hasActiveFilters,
   parseFilters,
   serializeFilters,
@@ -29,15 +28,7 @@ if (dataNode && list && form) {
   }
 
   const input = $<HTMLInputElement>('#q')!;
-  const selects = {
-    diet: $<HTMLSelectElement>('#diet')!,
-    time: $<HTMLSelectElement>('#time')!,
-    difficulty: $<HTMLSelectElement>('#difficulty')!,
-    cuisine: $<HTMLSelectElement>('#cuisine')!,
-    sort: $<HTMLSelectElement>('#sort')!
-  };
   const categoryChips = [...form.querySelectorAll<HTMLAnchorElement>('[data-category]')];
-  const letterButtons = [...form.querySelectorAll<HTMLButtonElement>('[data-letter]')];
   const clearButton = $<HTMLButtonElement>('#clear-filters')!;
   const status = $<HTMLElement>('#results-status')!;
   const empty = $<HTMLElement>('#empty-state')!;
@@ -46,20 +37,12 @@ if (dataNode && list && form) {
 
   function syncControls() {
     input.value = state.q;
-    selects.diet.value = state.diet;
-    selects.time.value = state.time;
-    selects.difficulty.value = state.difficulty;
-    selects.cuisine.value = state.cuisine;
-    selects.sort.value = state.sort;
     for (const chip of categoryChips) {
       const active = (chip.dataset.category ?? '') === state.category;
       if (active) chip.setAttribute('aria-current', 'true');
       else chip.removeAttribute('aria-current');
     }
-    for (const button of letterButtons) {
-      button.setAttribute('aria-pressed', String(button.dataset.letter === state.letter && state.letter !== ''));
-    }
-    clearButton.disabled = !hasActiveFilters({ ...state, sort: 'asc' });
+    clearButton.disabled = !hasActiveFilters(state);
   }
 
   function syncUrl() {
@@ -69,10 +52,9 @@ if (dataNode && list && form) {
   }
 
   function describe(count: number): string {
-    const order = state.sort === 'asc' ? 'A – Z' : 'Z – A';
     if (count === 0) return 'No recipes match';
-    if (!hasActiveFilters({ ...state, sort: 'asc' })) return `Showing all ${count} recipes, ${order}`;
-    return `${count} ${count === 1 ? 'recipe' : 'recipes'} match, ${order}`;
+    if (!hasActiveFilters(state)) return `Showing all ${count} recipes`;
+    return `${count} ${count === 1 ? 'recipe' : 'recipes'} match`;
   }
 
   function render() {
@@ -81,17 +63,6 @@ if (dataNode && list && form) {
 
     for (const [id, node] of nodes) {
       node.hidden = !visibleIds.has(id);
-    }
-    // Append in sorted order; appendChild moves existing nodes, so the DOM is reordered in place.
-    for (const entry of visible) {
-      const node = nodes.get(entry.id);
-      if (node) list!.appendChild(node);
-    }
-
-    // Letters are only enabled when they have matches under the other active filters.
-    const lettersAvailable = availableLetters(applyFilters(entries, { ...state, letter: '' }));
-    for (const button of letterButtons) {
-      button.disabled = !lettersAvailable.has(button.dataset.letter ?? '');
     }
 
     empty.hidden = visible.length > 0;
@@ -111,10 +82,6 @@ if (dataNode && list && form) {
     update({ q: input.value });
   });
 
-  for (const [key, select] of Object.entries(selects)) {
-    select.addEventListener('change', () => update({ [key]: select.value } as Partial<FilterState>));
-  }
-
   for (const chip of categoryChips) {
     chip.addEventListener('click', (event) => {
       event.preventDefault();
@@ -123,15 +90,8 @@ if (dataNode && list && form) {
     });
   }
 
-  for (const button of letterButtons) {
-    button.addEventListener('click', () => {
-      const letter = button.dataset.letter ?? '';
-      update({ letter: state.letter === letter ? '' : letter });
-    });
-  }
-
   clearButton.addEventListener('click', () => {
-    state = { ...EMPTY_FILTERS, sort: state.sort };
+    state = { ...EMPTY_FILTERS };
     render();
     input.focus();
   });

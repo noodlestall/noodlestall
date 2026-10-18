@@ -9,8 +9,6 @@ export const storageKeys = {
   steps: (id: string) => `bn:steps:${id}`
 };
 
-export const THEME_KEY = 'bn:theme';
-
 function getSession(): Storage | null {
   try {
     if (typeof window === 'undefined' || !window.sessionStorage) return null;

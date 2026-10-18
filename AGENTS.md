@@ -7,7 +7,7 @@ Instructions for AI coding agents (Codex, Claude Code, Copilot, Cursor and simil
 Boathouse Noodles is a personal recipe archive for family and friends, published for free on GitHub Pages at `https://noodlestall.github.io/noodlestall/`. It is a static Astro site with a deliberately small feature set:
 
 - Homepage index of every recipe with a photograph, number, title, category, time and difficulty.
-- Instant client-side search and filters (category, vegetarian/vegan, time, difficulty, cuisine, A–Z).
+- Instant client-side search (names, ingredients, tags) and category filters.
 - Recipe sheets with ingredient scaling, step checkboxes, printing, link copying and WhatsApp sharing.
 - A per-recipe shopping list with scaled quantities that can be ticked off, copied or shared.
 
@@ -24,7 +24,7 @@ There is no backend, database, login, editor, favourites, meal planning, nutriti
 | `src/scripts/` | Browser scripts for the index page and the recipe sheet. |
 | `src/pages/` | `index.astro` (archive), `recipes/[id].astro` (sheet), `404.astro`. |
 | `src/components/`, `src/layouts/` | UI pieces and the shared page shell. |
-| `src/styles/global.css` | Design tokens, paper/ink themes, typography, print styles. |
+| `src/styles/global.css` | Design tokens (ink mode only), typography, print styles. |
 | `src/assets/fonts/` | Self-hosted Courier Prime (SIL OFL) as the fallback for American Typewriter. |
 | `scripts/validate-recipes.ts` | Standalone recipe validator (`npm run validate`). |
 | `scripts/serve-dist.mjs` | Serves `dist/` under `/noodlestall/` for local checks and browser tests. |
@@ -65,7 +65,7 @@ cookTimeMinutes: 20
 coverImage: ./cover.webp    # required unless draft: true
 coverAlt: Bowl of pasta with tomato sauce
 draft: false                # true shows a category placeholder and a "Draft" label
-tags: [pasta, vegetarian]   # "vegetarian" and "vegan" tags drive the diet filter
+tags: [pasta, vegetarian]   # tags are searchable; use "vegetarian" / "vegan" when the whole recipe qualifies
 ingredientGroups:
   - title: Pasta
     ingredients:
@@ -132,7 +132,7 @@ Delete the whole folder under `src/content/recipes/`. Re-run `npm run build` to 
 
 ## Code changes
 
-- Keep the typewriter design: ivory paper, charcoal ink, thin rules, square controls, no shadows, gradients or large radii. Design tokens live at the top of `src/styles/global.css`.
+- Keep the typewriter design: ink mode only (dark paper, pale ink), thin rules, square controls, no shadows, gradients or large radii. There is no theme switch, sorting control, dropdown filter or letter index; do not add them back. Design tokens live at the top of `src/styles/global.css`.
 - Keep JavaScript small. Pure logic goes in `src/lib/` with unit tests; DOM wiring goes in `src/scripts/`.
 - Every link, image and share URL must respect the GitHub Pages base path. Use `import.meta.env.BASE_URL` on the server and the helpers in `src/lib/site.ts`.
 - Do not add dependencies without a clear need.

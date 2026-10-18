@@ -3,7 +3,6 @@ import '../styles/global.css';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { SITE, absoluteUrl, safeJson } from '../lib/site';
-import { THEME_KEY } from '../lib/storage';
 
 interface Props {
   title: string;
@@ -34,8 +33,7 @@ const ogImageUrl = ogImage ?? absoluteUrl(origin, `${base}og-default.png`);
     <link rel="canonical" href={canonical} />
     <link rel="icon" href={`${base}favicon.svg`} type="image/svg+xml" />
     <link rel="sitemap" href={`${base}sitemap-index.xml`} />
-    <meta name="theme-color" content="#f4eee2" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#221f1b" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#221f1b" />
     <meta property="og:site_name" content={SITE.name} />
     <meta property="og:type" content={ogType} />
     <meta property="og:title" content={fullTitle} />
@@ -47,16 +45,6 @@ const ogImageUrl = ogImage ?? absoluteUrl(origin, `${base}og-default.png`);
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
     {jsonLd && <script type="application/ld+json" set:html={safeJson(jsonLd)} />}
-    <script is:inline define:vars={{ THEME_KEY }}>
-      try {
-        const saved = window.localStorage.getItem(THEME_KEY);
-        if (saved === 'paper' || saved === 'ink') {
-          document.documentElement.setAttribute('data-theme', saved);
-        }
-      } catch (error) {
-        /* storage unavailable – fall back to the system preference */
-      }
-    </script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>

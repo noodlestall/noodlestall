@@ -1,6 +1,5 @@
 ---
 import Wordmark from './Wordmark.astro';
-import ThemeToggle from './ThemeToggle.astro';
 
 interface Props {
   current?: 'archive' | 'recipe';
@@ -16,7 +15,6 @@ const base = import.meta.env.BASE_URL;
       <a href={base} aria-current={current === 'archive' ? 'page' : undefined}>All recipes</a>
       <a href={`${base}#categories`}>Categories</a>
       <a href={`${base}#search`}>Search</a>
-      <ThemeToggle />
     </nav>
   </div>
 </header>

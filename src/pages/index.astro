@@ -3,13 +3,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import ArchiveControls from '../components/ArchiveControls.astro';
 import RecipeEntry from '../components/RecipeEntry.astro';
 import { getNumberedRecipes, toIndexEntry } from '../lib/recipes';
-import { availableLetters, uniqueCuisines } from '../lib/search';
 import { SITE, safeJson } from '../lib/site';
 
 const recipes = await getNumberedRecipes();
 const index = recipes.map(toIndexEntry);
-const cuisines = uniqueCuisines(index);
-const letters = availableLetters(index);
 const base = import.meta.env.BASE_URL;
 const count = recipes.length;
 ---
@@ -20,10 +17,10 @@ const count = recipes.length;
     <p class="eyebrow"><strong>{count}</strong> {count === 1 ? 'recipe' : 'recipes'} on file</p>
   </div>
 
-  <ArchiveControls cuisines={cuisines} letters={letters} />
+  <ArchiveControls />
 
   <div class="results-bar">
-    <p id="results-status" aria-live="polite" aria-atomic="true">Showing all {count} recipes, A – Z</p>
+    <p id="results-status" aria-live="polite" aria-atomic="true">Showing all {count} recipes</p>
   </div>
 
   <ol class="recipe-index" id="recipe-index" aria-label="Recipes">

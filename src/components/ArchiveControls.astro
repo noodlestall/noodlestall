@@ -1,20 +1,16 @@
 ---
-import { CATEGORIES, CATEGORY_LABELS, DIFFICULTIES, DIFFICULTY_LABELS } from '../lib/recipe-schema';
-import { LETTERS, TIME_OPTIONS } from '../lib/search';
-import { titleCase } from '../lib/site';
+import { CATEGORIES, CATEGORY_LABELS } from '../lib/recipe-schema';
 
-interface Props {
-  cuisines: string[];
-  letters: Set<string>;
-}
-const { cuisines, letters } = Astro.props;
 const base = import.meta.env.BASE_URL;
 ---
 
 <form class="controls" id="search" action={base} method="get" role="search" aria-label="Search and filter recipes">
-  <div class="field controls__search">
-    <label for="q">Search recipes, ingredients and tags</label>
-    <input type="search" id="q" name="q" placeholder="e.g. tomato, vegan, soup" autocomplete="off" spellcheck="false" />
+  <div class="controls__search">
+    <div class="field">
+      <label for="q">Search recipes, ingredients and tags</label>
+      <input type="search" id="q" name="q" placeholder="e.g. tomato, vegan, soup" autocomplete="off" spellcheck="false" />
+    </div>
+    <button type="button" class="btn btn--quiet" id="clear-filters">Clear filters</button>
   </div>
 
   <nav class="chip-row" id="categories" aria-label="Categories">
@@ -29,76 +25,7 @@ const base = import.meta.env.BASE_URL;
     }
   </nav>
 
-  <div class="controls__filters">
-    <div class="field">
-      <label for="diet">Diet</label>
-      <select id="diet" name="diet">
-        <option value="">Any</option>
-        <option value="vegetarian">Vegetarian</option>
-        <option value="vegan">Vegan</option>
-      </select>
-    </div>
-    <div class="field">
-      <label for="time">Cooking time</label>
-      <select id="time" name="time">
-        <option value="">Any</option>
-        {TIME_OPTIONS.map((option) => <option value={option.value}>{option.label}</option>)}
-      </select>
-    </div>
-    <div class="field">
-      <label for="difficulty">Difficulty</label>
-      <select id="difficulty" name="difficulty">
-        <option value="">Any</option>
-        {DIFFICULTIES.map((d) => <option value={d}>{DIFFICULTY_LABELS[d]}</option>)}
-      </select>
-    </div>
-    <div class="field">
-      <label for="cuisine">Cuisine</label>
-      <select id="cuisine" name="cuisine">
-        <option value="">Any</option>
-        {cuisines.map((cuisine) => <option value={cuisine}>{titleCase(cuisine)}</option>)}
-      </select>
-    </div>
-    <div class="field">
-      <label for="sort">Sort</label>
-      <select id="sort" name="sort">
-        <option value="asc">A – Z</option>
-        <option value="desc">Z – A</option>
-      </select>
-    </div>
-    <div class="field">
-      <span class="field__spacer" aria-hidden="true">&nbsp;</span>
-      <button type="button" class="btn btn--quiet" id="clear-filters">Clear filters</button>
-    </div>
-  </div>
-
-  <div class="chip-row" role="group" aria-labelledby="letters-label">
-    <span class="chip-row__label" id="letters-label">Browse by letter</span>
-    <div class="letter-index">
-      {
-        [...LETTERS, '#'].map((letter) => (
-          <button
-            type="button"
-            data-letter={letter}
-            aria-pressed="false"
-            disabled={!letters.has(letter)}
-            aria-label={letter === '#' ? 'Titles starting with a number or symbol' : `Titles starting with ${letter}`}
-          >
-            {letter}
-          </button>
-        ))
-      }
-    </div>
-  </div>
-
   <noscript>
     <p class="eyebrow">Filtering needs JavaScript. All recipes are listed below.</p>
   </noscript>
 </form>
-
-<style>
-  .field__spacer {
-    font-size: var(--text-xs);
-    line-height: 1.6;
-  }
-</style>
