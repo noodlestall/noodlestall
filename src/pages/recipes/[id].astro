@@ -3,7 +3,6 @@ import { render } from 'astro:content';
 import { getImage } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CoverImage from '../../components/CoverImage.astro';
-import ServingControls from '../../components/ServingControls.astro';
 import IngredientList from '../../components/IngredientList.astro';
 import ShoppingList from '../../components/ShoppingList.astro';
 import StepList from '../../components/StepList.astro';
@@ -112,7 +111,6 @@ const servingsNoun = data.servings === 1 ? 'serving' : 'servings';
   ogImage={ogImage}
   ogType="article"
   jsonLd={jsonLd}
-  current="recipe"
 >
   <article class="sheet" data-recipe-id={entry.id}>
     <header class="sheet__head">
@@ -154,8 +152,7 @@ const servingsNoun = data.servings === 1 ? 'serving' : 'servings';
 
     <div class="sheet__columns">
       <aside class="sheet__aside">
-        <ServingControls servings={data.servings} />
-        <IngredientList groups={data.ingredientGroups} />
+        <IngredientList groups={data.ingredientGroups} servings={data.servings} />
         <ShoppingList recipe={clientRecipe} />
       </aside>
 

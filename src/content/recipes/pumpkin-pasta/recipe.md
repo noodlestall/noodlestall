@@ -71,5 +71,3 @@ source:
 ---
 
 Hokkaido does not need peeling. Mildly marinated sun-dried tomatoes work best, but antipasti-style ones are fine too.
-
-Photograph from the original recipe at Emmi kocht einfach.

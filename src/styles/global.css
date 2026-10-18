@@ -462,30 +462,6 @@ input[type='checkbox']:checked::before {
   color: var(--ink-soft);
 }
 
-.site-nav {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: var(--space-2) var(--space-5);
-}
-
-.site-nav a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 2.75rem;
-  font-size: var(--text-sm);
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  text-decoration: none;
-  border-bottom: 2px solid transparent;
-}
-
-.site-nav a:hover,
-.site-nav a[aria-current='page'] {
-  border-bottom-color: var(--ink);
-}
-
 /* ---- Footer ---------------------------------------------------- */
 
 .site-footer {
@@ -790,10 +766,34 @@ input[type='checkbox']:checked::before {
 
 /* Servings */
 
-.servings {
-  display: grid;
+/* Heading row with the servings stepper on the right. */
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: var(--space-3);
-  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-2);
+  border-bottom: var(--rule-width) solid var(--ink);
+  margin-bottom: var(--space-4);
+}
+
+.section-head .section-title {
+  padding-bottom: 0;
+  border-bottom: 0;
+  margin-bottom: 0;
+}
+
+.servings {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.servings__label {
+  font-size: var(--text-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
 }
 
 .servings__row {
@@ -803,8 +803,10 @@ input[type='checkbox']:checked::before {
 }
 
 .servings__row .btn {
-  min-width: var(--control-height);
-  padding-inline: var(--space-3);
+  min-height: 2rem;
+  min-width: 2rem;
+  padding-inline: var(--space-2);
+  font-size: var(--text-sm);
 }
 
 .servings__row .btn:first-child {
@@ -818,13 +820,13 @@ input[type='checkbox']:checked::before {
 }
 
 .servings__input {
-  width: 5.5rem;
-  min-height: var(--control-height);
+  width: 3.25rem;
+  min-height: 2rem;
   text-align: center;
   border: var(--rule-width) solid var(--ink);
   border-radius: 0;
   background: transparent;
-  font-size: var(--text-lg);
+  font-size: var(--text-base);
   font-weight: 700;
   -moz-appearance: textfield;
 }
@@ -836,9 +838,14 @@ input[type='checkbox']:checked::before {
 }
 
 .servings__note {
+  margin: calc(-1 * var(--space-2)) 0 var(--space-3);
   font-size: var(--text-xs);
   color: var(--ink-soft);
   letter-spacing: 0.04em;
+}
+
+.servings__note[hidden] {
+  display: none;
 }
 
 /* Ingredients */
@@ -1119,7 +1126,6 @@ input[type='checkbox']:checked::before {
     font-size: 11pt;
   }
 
-  .site-nav,
   .sheet__actions,
   .servings__row,
   .shopping,

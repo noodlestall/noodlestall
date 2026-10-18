@@ -12,10 +12,9 @@ interface Props {
   ogImage?: string;
   ogType?: 'website' | 'article';
   jsonLd?: Record<string, unknown>;
-  current?: 'archive' | 'recipe';
 }
 
-const { title, description, path, ogImage, ogType = 'website', jsonLd, current } = Astro.props;
+const { title, description, path, ogImage, ogType = 'website', jsonLd } = Astro.props;
 const origin = Astro.site?.origin ?? SITE.url;
 const canonical = absoluteUrl(origin, path);
 const base = import.meta.env.BASE_URL;
@@ -48,7 +47,7 @@ const ogImageUrl = ogImage ?? absoluteUrl(origin, `${base}og-default.png`);
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
-    <SiteHeader current={current} />
+    <SiteHeader />
     <main id="main" class="container" tabindex="-1">
       <slot />
     </main>

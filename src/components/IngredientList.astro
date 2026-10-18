@@ -1,17 +1,40 @@
 ---
-import { formatQuantityWithUnit } from '../lib/scaling';
+import { formatQuantity, formatQuantityWithUnit } from '../lib/scaling';
 import { itemKey } from '../lib/shopping';
 import type { IngredientGroup } from '../lib/recipe-schema';
 
 interface Props {
   groups: IngredientGroup[];
+  servings: number;
 }
-const { groups } = Astro.props;
+const { groups, servings } = Astro.props;
 const showGroupTitles = groups.length > 1;
 ---
 
 <section aria-labelledby="ingredients-heading">
-  <h2 class="section-title" id="ingredients-heading">Ingredients</h2>
+  <div class="section-head">
+    <h2 class="section-title" id="ingredients-heading">Ingredients</h2>
+    <div class="servings" role="group" aria-label="Servings">
+      <span class="servings__label" aria-hidden="true">Serves</span>
+      <div class="servings__row">
+        <button type="button" class="btn" data-servings-step="-1" aria-label="Fewer servings">−</button>
+        <label class="visually-hidden" for="servings-input">Number of servings</label>
+        <input
+          class="servings__input"
+          id="servings-input"
+          type="number"
+          inputmode="decimal"
+          min="0.5"
+          max="999"
+          step="any"
+          value={formatQuantity(servings)}
+          data-original={servings}
+        />
+        <button type="button" class="btn" data-servings-step="1" aria-label="More servings">+</button>
+      </div>
+    </div>
+  </div>
+  <p class="servings__note" id="servings-note" aria-live="polite" hidden></p>
   {
     groups.map((group, g) => (
       <div class="ingredient-group">

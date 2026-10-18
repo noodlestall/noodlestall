@@ -143,8 +143,10 @@ test.describe('Recipe index', () => {
     await expect(page).toHaveURL(new RegExp(`/recipes/${second!.id}/$`));
   });
 
-  test('offers no dropdowns, sorting or letter index', async ({ page }) => {
+  test('offers no dropdowns, sorting, letter index or header navigation', async ({ page }) => {
     await page.goto('./');
+    await expect(page.locator('.site-nav')).toHaveCount(0);
+    await expect(page.locator('.site-header a')).toHaveCount(1);
     await expect(page.locator('#search select')).toHaveCount(0);
     await expect(page.locator('[data-letter]')).toHaveCount(0);
     await expect(page.getByLabel('Sort')).toHaveCount(0);

@@ -1,7 +1,9 @@
 /**
  * Client-side search and category filtering for the recipe index.
  * Entries are pre-rendered A–Z; this script only hides and shows them.
+ * Coming home also clears every ticked shopping list.
  */
+import { SHOPPING_PREFIX, clearSessionPrefix } from '../lib/storage';
 import {
   applyFilters,
   hasActiveFilters,
@@ -14,6 +16,8 @@ import {
 function $<T extends HTMLElement>(selector: string): T | null {
   return document.querySelector<T>(selector);
 }
+
+clearSessionPrefix(SHOPPING_PREFIX);
 
 const dataNode = document.getElementById('recipe-index-data');
 const list = document.getElementById('recipe-index');
@@ -91,10 +95,6 @@ if (dataNode && list && form) {
     state = parseFilters(new URLSearchParams(window.location.search));
     render();
   });
-
-  if (window.location.hash === '#search') {
-    input.focus({ preventScroll: false });
-  }
 
   render();
 }

@@ -44,6 +44,7 @@ test.describe('Recipe sheet', () => {
     await expect(quantity(page, '0-0')).toHaveText('300 g');
     await expect(quantity(page, '1-1')).toHaveText('3 pieces');
     await expect(page.locator('#servings-note')).toHaveText('Scaled from 2 to 3 servings.');
+    await expect(page.locator('#servings-note')).toBeVisible();
 
     await input.fill('1');
     await input.press('Enter');
@@ -163,6 +164,32 @@ test.describe('Recipe sheet', () => {
     const href = await page.locator('#share-whatsapp').getAttribute('href');
     const message = decodeURIComponent(href!.slice('https://wa.me/?text='.length));
     expect(message).toBe('Creamy Tomato Pasta – Boathouse Noodles\nhttps://noodlestall.github.io/noodlestall/recipes/creamy-tomato-pasta/');
+  });
+
+  test('puts the servings stepper in the ingredients heading and hides the note until scaled', async ({ page }) => {
+    await page.goto(PASTA);
+    const head = page.locator('.section-head');
+    await expect(head.getByRole('heading', { name: 'Ingredients' })).toBeVisible();
+    await expect(head.getByLabel('Number of servings')).toHaveValue('2');
+    await expect(page.locator('#servings-heading')).toHaveCount(0);
+    await expect(page.locator('#servings-note')).toBeHidden();
+    const heading = await head.getByRole('heading', { name: 'Ingredients' }).boundingBox();
+    const stepper = await head.locator('.servings__row').boundingBox();
+    expect(Math.abs(heading!.y + heading!.height / 2 - (stepper!.y + stepper!.height / 2))).toBeLessThan(8);
+  });
+
+  test('clears ticked shopping items when going back to the index', async ({ page }) => {
+    await page.goto(PASTA);
+    await page.locator('#shopping summary').click();
+    const first = page.locator('[data-shopping-item="0-0"]');
+    await first.check();
+    await page.reload();
+    await expect(page.locator('[data-shopping-item="0-0"]')).toBeChecked();
+
+    await page.getByRole('link', { name: 'Boathouse Noodles – home' }).click();
+    await expect(page).toHaveURL(/\/noodlestall\/$/);
+    await page.goto(PASTA);
+    await expect(page.locator('[data-shopping-item="0-0"]')).not.toBeChecked();
   });
 
   test('shows the method as plain numbered steps without checkboxes', async ({ page }) => {

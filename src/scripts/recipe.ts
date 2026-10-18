@@ -71,10 +71,9 @@ if (recipe) {
       });
     });
     if (note) {
-      note.textContent =
-        servings === recipe!.servings
-          ? `Original recipe for ${formatQuantity(recipe!.servings)} ${recipe!.servings === 1 ? 'serving' : 'servings'}.`
-          : `Scaled from ${formatQuantity(recipe!.servings)} to ${formatQuantity(servings)} servings.`;
+      const scaled = servings !== recipe!.servings;
+      note.hidden = !scaled;
+      note.textContent = scaled ? `Scaled from ${formatQuantity(recipe!.servings)} to ${formatQuantity(servings)} servings.` : '';
     }
   }
 
