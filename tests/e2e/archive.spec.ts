@@ -8,7 +8,7 @@ interface IndexEntry {
   searchText: string;
 }
 
-const INK_BACKGROUND = 'rgb(34, 31, 27)';
+const PAPER_BACKGROUND = 'rgb(244, 238, 226)';
 
 async function visibleTitles(page: Page) {
   return page.locator('#recipe-index .entry:not([hidden]) .entry__title a').allTextContents();
@@ -162,16 +162,16 @@ test.describe('Recipe index', () => {
     await expect(page).toHaveURL(new RegExp(`/recipes/${firstId}/$`));
   });
 
-  test('always renders in ink mode with no theme switch', async ({ page }) => {
-    await page.emulateMedia({ colorScheme: 'light' });
+  test('always renders on bright paper, even with a dark system preference', async ({ page }) => {
+    await page.emulateMedia({ colorScheme: 'dark' });
     await page.goto('./');
     await expect(page.locator('#theme-toggle')).toHaveCount(0);
     await expect(page.locator('html')).not.toHaveAttribute('data-theme', /./);
-    expect(await page.evaluate(() => getComputedStyle(document.body).backgroundColor)).toBe(INK_BACKGROUND);
+    expect(await page.evaluate(() => getComputedStyle(document.body).backgroundColor)).toBe(PAPER_BACKGROUND);
 
-    await page.emulateMedia({ colorScheme: 'dark' });
+    await page.emulateMedia({ colorScheme: 'light' });
     await page.reload();
-    expect(await page.evaluate(() => getComputedStyle(document.body).backgroundColor)).toBe(INK_BACKGROUND);
+    expect(await page.evaluate(() => getComputedStyle(document.body).backgroundColor)).toBe(PAPER_BACKGROUND);
   });
 
   test('lays out the index for the viewport', async ({ page }, testInfo) => {

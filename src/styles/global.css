@@ -1,6 +1,6 @@
 /* ------------------------------------------------------------------
    Boathouse Noodles – design tokens and shared styles
-   A typewritten recipe archive in ink mode: dark paper, pale ink, thin rules.
+   A typewritten recipe archive: ivory paper, charcoal ink, thin rules. One light theme, no switch.
    ------------------------------------------------------------------ */
 
 @font-face {
@@ -71,19 +71,19 @@
 /* ---- Tokens ---------------------------------------------------- */
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 
   --font-type: 'American Typewriter', 'Courier Prime', 'Courier New', Georgia, serif;
 
-  --paper: #221f1b;
-  --paper-deep: #2b2824;
-  --ink: #efe8d8;
-  --ink-soft: #bcb3a3;
-  --ink-faint: #9a9285;
-  --rule: #3d3932;
-  --rule-strong: #5c564c;
-  --ribbon: #d2695c;
-  --focus: #8ec3ea;
+  --paper: #f4eee2;
+  --paper-deep: #ebe3d3;
+  --ink: #2b2a27;
+  --ink-soft: #625e57;
+  --ink-faint: #6e6960;
+  --rule: #d3cab8;
+  --rule-strong: #a9a08e;
+  --ribbon: #a63d31;
+  --focus: #1f5f8b;
 
   --measure: 68ch;
   --container: 76rem;

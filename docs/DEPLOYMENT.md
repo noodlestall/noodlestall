@@ -23,10 +23,11 @@ If the repository ever lives under a different owner or name, change `site` and 
 1. Install dependencies with `npm ci` (Node version from `.nvmrc`).
 2. `npm run validate` – every recipe folder is checked.
 3. `npm run check` – TypeScript and Astro diagnostics.
-4. `npm test` – unit tests.
-5. `npm run build` – static site into `dist/`.
-6. `npm run test:e2e` – browser tests against the built site at phone, tablet and desktop widths.
-7. Upload `dist/` and deploy it to GitHub Pages.
+4. `npm run build` – static site into `dist/`.
+5. `npm run test:e2e` – browser tests against the built site at phone, tablet and desktop widths.
+6. Upload `dist/` and deploy it to GitHub Pages.
+
+Unit tests (`npm test`) run locally only, as part of `npm run verify`.
 
 Any failing step stops the deployment; the previous version of the site stays online.
 

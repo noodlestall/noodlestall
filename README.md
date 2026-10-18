@@ -12,7 +12,7 @@ A personal recipe archive for family and friends, designed to look like a carefu
 - **Ingredient scaling** from the original servings: + / −, direct entry, ½×, 1×, 2× and reset. Metric only, two decimal places, nothing is rounded away.
 - **Shopping list** per recipe using the scaled quantities: tick items off, copy the rest or send them via WhatsApp.
 - **Print**, **copy link** and **share via WhatsApp** on every recipe.
-- **Ink mode** throughout: dark paper, pale type, no theme switch.
+- **One bright paper theme**: ivory background, charcoal type, no dark mode or theme switch.
 - Semantic HTML, keyboard support, visible focus, reduced-motion support, Open Graph tags, sitemap, robots.txt and schema.org Recipe data.
 
 Nothing is stored beyond the browser session: no accounts, no favourites, no cloud sync.
@@ -66,11 +66,11 @@ The six sample recipes ship with **placeholder illustrations** instead of photog
 
 ## Deployment
 
-Pushing to `main` runs validation, type checks, unit and browser tests, builds the site and deploys it to GitHub Pages. Pull requests run the same checks without deploying. One-time repository setup and troubleshooting: [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
+Pushing to `main` runs validation, type checks and browser tests, builds the site and deploys it to GitHub Pages. Unit tests run locally only (`npm test`, included in `npm run verify`). Pull requests run the same checks without deploying. One-time repository setup and troubleshooting: [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
 
 ## Design
 
-Typography does the work: `"American Typewriter", "Courier Prime", "Courier New", Georgia, serif`. American Typewriter is used where the system provides it (macOS, iOS); elsewhere the self-hosted, SIL-OFL-licensed Courier Prime takes over. Dark paper, pale ink, thin rules, square controls, generous whitespace. Design tokens live at the top of `src/styles/global.css`.
+Typography does the work: `"American Typewriter", "Courier Prime", "Courier New", Georgia, serif`. American Typewriter is used where the system provides it (macOS, iOS); elsewhere the self-hosted, SIL-OFL-licensed Courier Prime takes over. Ivory paper, charcoal ink, thin rules, square controls, generous whitespace. Design tokens live at the top of `src/styles/global.css`.
 
 ## Licence
 

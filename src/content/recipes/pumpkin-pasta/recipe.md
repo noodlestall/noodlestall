@@ -7,7 +7,8 @@ difficulty: easy
 servings: 4
 prepTimeMinutes: 15
 cookTimeMinutes: 20
-draft: true
+coverImage: ./cover.webp
+coverAlt: Black plate of spaghetti with roasted pumpkin, sun-dried tomatoes and parsley, with walnuts and a hokkaido pumpkin alongside
 tags:
   - pasta
   - pumpkin
@@ -69,3 +70,5 @@ source:
 ---
 
 Hokkaido does not need peeling. Mildly marinated sun-dried tomatoes work best, but antipasti-style ones are fine too.
+
+Photograph from the original recipe at Emmi kocht einfach.

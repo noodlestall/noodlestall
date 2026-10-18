@@ -24,7 +24,7 @@ There is no backend, database, login, editor, favourites, meal planning, nutriti
 | `src/scripts/` | Browser scripts for the index page and the recipe sheet. |
 | `src/pages/` | `index.astro` (archive), `recipes/[id].astro` (sheet), `404.astro`. |
 | `src/components/`, `src/layouts/` | UI pieces and the shared page shell. |
-| `src/styles/global.css` | Design tokens (ink mode only), typography, print styles. |
+| `src/styles/global.css` | Design tokens (single light paper theme), typography, print styles. |
 | `src/assets/fonts/` | Self-hosted Courier Prime (SIL OFL) as the fallback for American Typewriter. |
 | `scripts/validate-recipes.ts` | Standalone recipe validator (`npm run validate`). |
 | `scripts/serve-dist.mjs` | Serves `dist/` under `/noodlestall/` for local checks and browser tests. |
@@ -132,7 +132,7 @@ Delete the whole folder under `src/content/recipes/`. Re-run `npm run build` to 
 
 ## Code changes
 
-- Keep the typewriter design: ink mode only (dark paper, pale ink), thin rules, square controls, no shadows, gradients or large radii. There is no theme switch, sorting control, dropdown filter or letter index; do not add them back. Design tokens live at the top of `src/styles/global.css`.
+- Keep the typewriter design: one bright theme (ivory paper, charcoal ink), thin rules, square controls, no shadows, gradients or large radii. There is no dark mode, theme switch, sorting control, dropdown filter or letter index; do not add them back. Design tokens live at the top of `src/styles/global.css`.
 - Keep JavaScript small. Pure logic goes in `src/lib/` with unit tests; DOM wiring goes in `src/scripts/`.
 - Every link, image and share URL must respect the GitHub Pages base path. Use `import.meta.env.BASE_URL` on the server and the helpers in `src/lib/site.ts`.
 - Do not add dependencies without a clear need.
