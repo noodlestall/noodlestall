@@ -10,7 +10,7 @@ function quantity(page: import('@playwright/test').Page, key: string) {
 test.describe('Recipe sheet', () => {
   test('renders the sheet with metadata, ingredients, steps and notes', async ({ page }) => {
     await page.goto(PASTA);
-    await expect(page).toHaveTitle('Pumpkin Pasta with Walnuts – Boathouse Noodles');
+    await expect(page).toHaveTitle('Pumpkin Pasta with Walnuts – Noodlestall au Lac');
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('Pumpkin Pasta with Walnuts');
     await expect(page.locator('.sheet__cover img')).toHaveCount(1);
     await expect(page.locator('.meta-grid dt')).toHaveText(['Prep', 'Cook', 'Total', 'Servings', 'Difficulty', 'Cuisine']);
@@ -133,7 +133,7 @@ test.describe('Recipe sheet', () => {
     const href = await link.getAttribute('href');
     expect(href).toMatch(/^https:\/\/wa\.me\/\?text=/);
     const message = decodeURIComponent(href!.slice('https://wa.me/?text='.length));
-    expect(message).toContain('🛒 BOATHOUSE NOODLES');
+    expect(message).toContain('🛒 NOODLESTALL AU LAC');
     expect(message).toContain('Shopping List: Pumpkin Pasta with Walnuts');
     expect(message).toContain('Servings: 5');
     expect(message).toContain('☐ 1250 g Hokkaido pumpkin');
@@ -168,7 +168,7 @@ test.describe('Recipe sheet', () => {
     await page.goto(PASTA);
     const href = await page.locator('#share-whatsapp').getAttribute('href');
     const message = decodeURIComponent(href!.slice('https://wa.me/?text='.length));
-    expect(message).toBe('Pumpkin Pasta with Walnuts – Boathouse Noodles\nhttps://noodlestall.github.io/noodlestall/recipes/pumpkin-pasta/');
+    expect(message).toBe('Pumpkin Pasta with Walnuts – Noodlestall au Lac\nhttps://noodlestall.github.io/noodlestall/recipes/pumpkin-pasta/');
   });
 
   test('puts the servings stepper in a closing row under the ingredients and hides the note until scaled', async ({ page }) => {
@@ -199,7 +199,7 @@ test.describe('Recipe sheet', () => {
     await expect(page.locator('[data-shopping-item="0-0"]')).toBeChecked();
     await expect(page.getByLabel('Number of servings')).toHaveValue('5');
 
-    await page.getByRole('link', { name: 'Boathouse Noodles – home' }).click();
+    await page.getByRole('link', { name: 'Noodlestall au Lac – home' }).click();
     await expect(page).toHaveURL(/\/noodlestall\/$/);
     await page.goto(PASTA);
     await expect(page.locator('[data-shopping-item="0-0"]')).not.toBeChecked();

@@ -1,10 +1,10 @@
-# AGENTS.md – working on Boathouse Noodles
+# AGENTS.md – working on Noodlestall au Lac
 
 Instructions for AI coding agents (Codex, Claude Code, Copilot, Cursor and similar) and for people. Read this before touching the repository. The most common task is **adding a recipe**; the step-by-step procedure is in the second half of this file.
 
 ## What this project is
 
-Boathouse Noodles is a personal recipe archive for family and friends, published for free on GitHub Pages at `https://noodlestall.github.io/noodlestall/`. It is a static Astro site with a deliberately small feature set:
+Noodlestall au Lac is a personal recipe archive for family and friends, published for free on GitHub Pages at `https://noodlestall.github.io/noodlestall/`. It is a static Astro site with a deliberately small feature set:
 
 - Homepage index of every recipe with a photograph, number, title, category, time and difficulty.
 - Instant client-side search (names, ingredients, tags) and a fold-out Categories menu, closed by default.

@@ -1,5 +1,5 @@
 export const SITE = {
-  name: 'Boathouse Noodles',
+  name: 'Noodlestall au Lac',
   tagline: 'Personal Recipe Archive',
   description: 'A personal archive of typewritten recipes for family and friends.',
   /** Production origin. Override with the SITE env variable for forks. */

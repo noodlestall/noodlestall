@@ -14,12 +14,12 @@ export interface ShoppingListInput {
   groups: ShoppingGroup[];
 }
 
-const BRAND_LINE = '🛒 BOATHOUSE NOODLES';
+const BRAND_LINE = '🛒 NOODLESTALL AU LAC';
 
 /**
  * Plain-text shopping list of the remaining (unchecked) ingredients.
  *
- * 🛒 BOATHOUSE NOODLES
+ * 🛒 NOODLESTALL AU LAC
  *
  * Shopping List: Creamy Tomato Pasta
  * Servings: 2
@@ -59,5 +59,5 @@ export function buildWhatsAppUrl(text: string): string {
 }
 
 export function buildRecipeShareMessage(title: string, url: string): string {
-  return `${title} – Boathouse Noodles\n${url}`;
+  return `${title} – Noodlestall au Lac\n${url}`;
 }

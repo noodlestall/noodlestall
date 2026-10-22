@@ -1,4 +1,4 @@
-# Boathouse Noodles
+# Noodlestall au Lac
 
 A personal recipe archive for family and friends, designed to look like a carefully kept collection of typewritten recipe sheets. Built with [Astro](https://astro.build), published for free on GitHub Pages.
 

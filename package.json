@@ -1,9 +1,9 @@
 {
-  "name": "boathouse-noodles",
+  "name": "noodlestall-au-lac",
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Boathouse Noodles – a personal recipe archive built with Astro and hosted on GitHub Pages.",
+  "description": "Noodlestall au Lac – a personal recipe archive built with Astro and hosted on GitHub Pages.",
   "engines": {
     "node": ">=22.22.0"
   },

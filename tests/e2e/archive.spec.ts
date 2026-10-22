@@ -30,8 +30,8 @@ function titlesMatching(data: IndexEntry[], query: string, category = ''): strin
 test.describe('Recipe index', () => {
   test('lists every recipe with a photograph, number, category, time and difficulty', async ({ page }) => {
     await page.goto('./');
-    await expect(page).toHaveTitle(/Boathouse Noodles/);
-    await expect(page.getByRole('link', { name: 'Boathouse Noodles – home' })).toBeVisible();
+    await expect(page).toHaveTitle(/Noodlestall au Lac/);
+    await expect(page.getByRole('link', { name: 'Noodlestall au Lac – home' })).toBeVisible();
 
     const data = await indexData(page);
     expect(data.length).toBeGreaterThan(0);

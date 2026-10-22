@@ -35,7 +35,7 @@ describe('buildShoppingListMessage', () => {
     const message = buildShoppingListMessage({ recipeTitle: recipe.title, servings: 2, groups });
     expect(message).toBe(
       [
-        '🛒 BOATHOUSE NOODLES',
+        '🛒 NOODLESTALL AU LAC',
         '',
         'Shopping List: Creamy Tomato Pasta',
         'Servings: 2',
@@ -83,18 +83,18 @@ describe('shoppingLabel', () => {
 
 describe('WhatsApp links', () => {
   it('percent-encodes the message, including emoji and newlines', () => {
-    const url = buildWhatsAppUrl('🛒 BOATHOUSE NOODLES\n\nShopping List: Crème & Co');
+    const url = buildWhatsAppUrl('🛒 NOODLESTALL AU LAC\n\nShopping List: Crème & Co');
     expect(url.startsWith('https://wa.me/?text=')).toBe(true);
     expect(url).toContain('%F0%9F%9B%92');
     expect(url).toContain('%0A%0A');
     expect(url).toContain('%26');
     expect(url).not.toContain(' ');
-    expect(decodeURIComponent(url.slice('https://wa.me/?text='.length))).toBe('🛒 BOATHOUSE NOODLES\n\nShopping List: Crème & Co');
+    expect(decodeURIComponent(url.slice('https://wa.me/?text='.length))).toBe('🛒 NOODLESTALL AU LAC\n\nShopping List: Crème & Co');
   });
 
   it('builds the recipe share message with the absolute URL', () => {
     expect(buildRecipeShareMessage('Shakshuka', 'https://noodlestall.github.io/noodlestall/recipes/shakshuka/')).toBe(
-      'Shakshuka – Boathouse Noodles\nhttps://noodlestall.github.io/noodlestall/recipes/shakshuka/'
+      'Shakshuka – Noodlestall au Lac\nhttps://noodlestall.github.io/noodlestall/recipes/shakshuka/'
     );
   });
 });

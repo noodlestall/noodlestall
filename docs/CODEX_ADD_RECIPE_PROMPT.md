@@ -3,7 +3,7 @@
 Copy the block below into Codex, Claude Code, GitHub Copilot or any coding agent that has the repository open. Replace the part in square brackets with the recipe link, pasted text, or attach the screenshot or photo.
 
 ```text
-Add a recipe to Boathouse Noodles. Follow AGENTS.md in this repository exactly.
+Add a recipe to Noodlestall au Lac. Follow AGENTS.md in this repository exactly.
 
 Source: [paste the URL, the recipe text, or attach the screenshot/photo]
 
